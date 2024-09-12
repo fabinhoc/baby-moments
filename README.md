@@ -30,41 +30,41 @@
    cd baby-moments
    ```
 
-## Install the dependencies
+2. Install the dependencies
 
-```bash
-yarn
-# or
-npm install
-```
+   ```bash
+   yarn
+   # or
+   npm install
+   ```
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+3. Start the app in development mode (hot-code reloading, error reporting, etc.)
 
-```bash
-quasar dev
-```
+   ```bash
+   quasar dev
+   ```
 
-### Lint the files
+4. Lint the files
 
-```bash
-yarn lint
-# or
-npm run lint
-```
+   ```bash
+   yarn lint
+   # or
+   npm run lint
+   ```
 
-### Format the files
+5. Format the files
 
-```bash
-yarn format
-# or
-npm run format
-```
+   ```bash
+   yarn format
+   # or
+   npm run format
+   ```
 
-### Build the app for production
+6. Build the app for production
 
-```bash
-quasar build
-```
+   ```bash
+   quasar build
+   ```
 
 ### Customize the configuration
 
