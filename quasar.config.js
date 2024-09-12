@@ -31,7 +31,7 @@ module.exports = configure(function (/* ctx */) {
       // 'fontawesome-v6',
       // 'eva-icons',
       // 'themify',
-      // 'line-awesome',
+      'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
       'roboto-font', // optional, you are not bound to it
@@ -45,7 +45,7 @@ module.exports = configure(function (/* ctx */) {
         node: 'node20',
       },
 
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      vueRouterMode: 'history', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -102,7 +102,26 @@ module.exports = configure(function (/* ctx */) {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
-      config: {},
+      config: {
+        brand: {
+          primary: '#b47fde',
+          'primary-light-100': '#dec9f0',
+          'primary-light-200': '#c8a5e8',
+          'primary-light-400': '#a260d5',
+          'primary-light-500': '#9142cb',
+          secondary: '#e0b3ff',
+
+          accent: '#f8a8ff',
+
+          dark: '#4b3860',
+          'dark-page': '#33223d',
+
+          positive: '#4cd964',
+          negative: '#ff5e5e',
+          info: '#64b6f7',
+          warning: '#ffbe3d',
+        },
+      },
 
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
@@ -142,7 +161,7 @@ module.exports = configure(function (/* ctx */) {
       // extendSSRWebserverConf (esbuildConf) {},
       // extendPackageJson (json) {},
 
-      pwa: false,
+      pwa: true,
 
       // manualStoreHydration: true,
       // manualPostHydrationTrigger: true,
