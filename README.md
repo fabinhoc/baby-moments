@@ -41,7 +41,7 @@
 3. Start the app in development mode (hot-code reloading, error reporting, etc.)
 
    ```bash
-   quasar dev
+   yarn quasar dev
    ```
 
 4. Lint the files
@@ -63,7 +63,7 @@
 6. Build the app for production
 
    ```bash
-   quasar build
+   yarn quasar build
    ```
 
 ### Customize the configuration
