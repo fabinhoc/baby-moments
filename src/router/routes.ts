@@ -2,11 +2,39 @@ import { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/',
+    path: '',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: 'timeline', component: () => import('pages/TimelinePage.vue') },
+      {
+        path: '',
+        name: 'index',
+        component: () => import('pages/IndexPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
+      {
+        path: '/timeline',
+        name: 'view-timeline',
+        component: () => import('pages/timeline/ViewPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
+    ],
+  },
+  {
+    path: '/timeline',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('pages/timeline/ListPage.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
     ],
   },
 

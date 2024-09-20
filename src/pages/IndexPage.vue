@@ -1,15 +1,7 @@
 <template>
-  <q-page class="column items-center justify-start" padding ref="page">
-    <PageTitle :title="'Index'" />
+  <q-page padding ref="page">
+    <div class="column items-center justify-start q-gutter-y-md">
+      A pagina index será a landing page para vender o produto
+    </div>
   </q-page>
 </template>
-
-<script setup lang="ts">
-import PageTitle from 'src/components/PageTitle.vue';
-
-defineOptions({
-  name: 'IndexPage',
-});
-</script>
-
-<style type="css" lang="css"></style>
