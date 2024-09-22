@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, type Ref, ComputedRef, ref } from 'vue';
+import { computed, Ref, ComputedRef, ref } from 'vue';
 
 defineOptions({
   name: 'BtnConfig',
@@ -29,7 +29,7 @@ const spacingPlanLabel: ComputedRef<string> = computed(
         <q-list>
           <q-item>
             <q-item-section>
-              <div>Espaço Disponível</div>
+              <div>{{ $t('app.components.btnConfig.labelSlider') }}</div>
             </q-item-section>
           </q-item>
           <q-item class="" v-close-popup>
@@ -53,7 +53,9 @@ const spacingPlanLabel: ComputedRef<string> = computed(
           </q-item>
           <q-item clickable v-close-popup>
             <q-item-section class="text-primary">
-              <q-item-label>Fazer upgrade! </q-item-label>
+              <q-item-label
+                >{{ $t('app.components.btnConfig.doUpgrade') }}
+              </q-item-label>
             </q-item-section>
           </q-item>
         </q-list>

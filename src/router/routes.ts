@@ -29,8 +29,24 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: 'list',
-        name: 'list',
+        name: 'timeline-list',
         component: () => import('pages/timeline/ListPage.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'edit',
+        name: 'timeline-edit',
+        component: () => import('pages/timeline/EditPage.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'new',
+        name: 'timeline-new',
+        component: () => import('pages/timeline/NewPage.vue'),
         meta: {
           requiresAuth: true,
         },

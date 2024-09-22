@@ -21,7 +21,7 @@ defineOptions({
           <q-avatar icon="las la-pen" text-color="black" flat round />
         </q-item-section>
         <q-item-section>
-          <q-item-label>Editar</q-item-label>
+          <q-item-label>{{ $t('app.components.btnUser.edit') }}</q-item-label>
         </q-item-section>
       </q-item>
       <q-item clickable v-close-popup>
@@ -29,7 +29,9 @@ defineOptions({
           <q-avatar icon="las la-signature" text-color="primary" flat round />
         </q-item-section>
         <q-item-section>
-          <q-item-label>Minha assinatura</q-item-label>
+          <q-item-label>{{
+            $t('app.components.btnUser.signature')
+          }}</q-item-label>
         </q-item-section>
       </q-item>
       <q-item clickable v-close-popup>
@@ -42,7 +44,7 @@ defineOptions({
           />
         </q-item-section>
         <q-item-section>
-          <q-item-label>Logout</q-item-label>
+          <q-item-label>{{ $t('app.components.btnUser.logout') }}</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>

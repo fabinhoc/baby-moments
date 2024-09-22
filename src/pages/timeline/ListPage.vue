@@ -1,7 +1,7 @@
 <template>
   <q-page padding ref="page">
     <div class="column items-center justify-start q-gutter-y-md">
-      <PageTitle :title="'Minhas timelines'" />
+      <PageTitle :title="$t('app.pages.timeline.list.title')" />
       <q-card
         class="col q-pa-md cursor-pointer hover-card full-width"
         v-for="(timeline, index) in timelines"
@@ -28,21 +28,40 @@
           </div>
         </q-card-section>
         <q-card-section class="row q-gutter-sm">
-          <q-btn color="info" outline size="xs" icon="las la-pencil-alt" rounded
-            >Editar</q-btn
+          <q-btn
+            color="positive"
+            size="sm"
+            icon="las la-plus"
+            rounded
+            unelevated
+            >{{ $t('app.pages.timeline.list.addMoment') }}</q-btn
+          >
+          <q-btn
+            color="info"
+            outline
+            size="sm"
+            icon="las la-pencil-alt"
+            rounded
+            :to="{ name: 'timeline-edit' }"
+            >{{ $t('app.pages.timeline.list.edit') }}</q-btn
           >
           <q-btn
             color="negative"
             outline
             icon="las la-trash-alt"
             rounded
-            size="xs"
-            >Remover</q-btn
+            size="sm"
+            >{{ $t('app.pages.timeline.list.remove') }}</q-btn
           >
         </q-card-section>
       </q-card>
-      <q-btn color="positive" outline rounded icon="las la-plus"
-        >Adicionar novo</q-btn
+      <q-btn
+        :to="{ name: 'timeline-new' }"
+        color="positive"
+        outline
+        rounded
+        icon="las la-plus"
+        >{{ $t('app.pages.timeline.list.add') }}</q-btn
       >
     </div>
   </q-page>
