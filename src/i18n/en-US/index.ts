@@ -39,6 +39,7 @@ export default {
         avatar: 'Image',
         save: 'Save',
         cancel: 'Cancel',
+        theme: 'Theme',
       },
       tableMoments: {
         title: 'Title',
@@ -57,6 +58,7 @@ export default {
         edit: {
           title: 'Edit Timeline',
           goBack: 'Go back',
+          moment: 'Moment | Moments',
         },
         new: {
           title: 'New Timeline',

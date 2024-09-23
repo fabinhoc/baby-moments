@@ -111,20 +111,24 @@ const data: MomentType[] = [
           :title="$t('app.pages.timeline.edit.title')"
           class="text-center"
         ></PageTitle>
-        <q-btn
-          :to="{ name: 'timeline-list' }"
-          icon="las la-undo"
-          flat
-          rounded
-          color="primary"
-          >{{ $t('app.pages.timeline.edit.goBack') }}</q-btn
-        >
+        <q-card-section>
+          <q-btn
+            :to="{ name: 'timeline-list' }"
+            icon="las la-undo"
+            flat
+            rounded
+            color="primary"
+            >{{ $t('app.pages.timeline.edit.goBack') }}</q-btn
+          >
+        </q-card-section>
         <q-card-section>
           <TimelineForm />
         </q-card-section>
         <q-card-section class="column q-gutter-md">
           <q-separator></q-separator>
-          <div class="text-h6 text-secondary">Moments</div>
+          <div class="text-h6 text-secondary">
+            {{ $t('app.pages.timeline.edit.moment', 0) }}
+          </div>
           <div>
             <q-btn
               color="positive"

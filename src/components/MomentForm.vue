@@ -13,11 +13,13 @@ const form: Ref<MomentDto> = ref({
   title: null,
   description: null,
   avatar: null,
+  color: '#eeeeee',
 });
 const rules = {
   title: { required },
   description: {},
   avatar: {},
+  color: {},
 };
 
 const v$ = useVuelidate(rules, form);
@@ -29,6 +31,7 @@ const clear = () => {
     title: null,
     description: null,
     avatar: null,
+    color: null,
   };
   formMoment.value.reset();
 };
@@ -48,6 +51,30 @@ const clear = () => {
           ]"
         >
         </q-input>
+      </div>
+      <div class="col col-sm-12 col-md-12 col-lg-12 col-xs-12">
+        <q-input
+          outlined
+          v-model="v$.color.$model"
+          :rules="['anyColor']"
+          class="my-input"
+          :label="$t('app.components.momentForm.theme')"
+        >
+          <template v-slot:append>
+            <q-icon name="colorize" class="cursor-pointer">
+              <q-popup-proxy
+                cover
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-color v-model="v$.color.$model" />
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+        <q-badge :style="{ backgroundColor: form.color }" class="q-mb-sm">
+          <span class="text-dark">{{ form.color }}</span>
+        </q-badge>
       </div>
       <div class="col col-sm-12 col-md-12 col-lg-12 col-xs-12">
         <q-input

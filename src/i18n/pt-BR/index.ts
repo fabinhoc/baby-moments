@@ -36,6 +36,7 @@ export default {
         avatar: 'Imagem destaque',
         save: 'Salvar',
         cancel: 'Cancelar',
+        theme: 'Tema',
       },
       tableMoments: {
         title: 'Título',
@@ -54,6 +55,7 @@ export default {
         edit: {
           title: 'Editar Timeline',
           goBack: 'Voltar',
+          moment: 'Momento | Momentos',
         },
         new: {
           title: 'Nova Timeline',

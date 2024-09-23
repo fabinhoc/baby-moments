@@ -18,7 +18,7 @@ defineOptions({
         </PageTitle>
         <q-card-section>
           <q-btn
-            :to="{ name: 'timeline-list' }"
+            :to="{ name: 'timeline-edit' }"
             icon="las la-undo"
             flat
             rounded
