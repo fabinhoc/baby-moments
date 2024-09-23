@@ -33,7 +33,7 @@ const clear = () => {
 <template>
   <q-form ref="timelineForm" @submit.prevent="handleSubmit">
     <div class="row q-col-gutter-md">
-      <div class="col-sm-12 col-md-12 col-lg-12">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
         <q-input
           v-model="v$.title.$model"
           :label="$t('app.components.timelineForm.title')"
@@ -45,7 +45,7 @@ const clear = () => {
         >
         </q-input>
       </div>
-      <div class="col-sm-12 col-md-12 col-lg-12">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
         <q-input
           v-model="v$.description.$model"
           counter
@@ -56,7 +56,7 @@ const clear = () => {
         >
         </q-input>
       </div>
-      <div class="col-sm-12 col-md-12 col-lg-12 q-gutter-sm">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 q-gutter-sm">
         <q-btn type="submit" color="primary" outline :disable="v$.$invalid">{{
           $t('app.components.timelineForm.save')
         }}</q-btn>

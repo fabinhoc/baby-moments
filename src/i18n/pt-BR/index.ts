@@ -30,12 +30,32 @@ export default {
         signature: 'Minha assinatura',
         logout: 'Sair',
       },
+      momentForm: {
+        title: 'Título',
+        description: 'Descrição',
+        avatar: 'Imagem destaque',
+        save: 'Salvar',
+        cancel: 'Cancelar',
+        theme: 'Tema',
+      },
+      tableMoments: {
+        title: 'Título',
+        avatar: 'Avatar',
+        createdAt: 'Criado em',
+        updatedAt: 'Atualizado em',
+        description: 'Descrição',
+        theme: 'Tema',
+        actions: 'Ações',
+        photo: 'Foto | Fotos',
+        video: 'Vídeo | Vídeos',
+      },
     },
     pages: {
       timeline: {
         edit: {
           title: 'Editar Timeline',
           goBack: 'Voltar',
+          moment: 'Momento | Momentos',
         },
         new: {
           title: 'Nova Timeline',
@@ -49,6 +69,16 @@ export default {
           addMoment: 'Adcionar momentos',
         },
         view: {},
+      },
+      moment: {
+        edit: {
+          title: 'Editar Momento',
+          goBack: 'Voltar',
+        },
+        new: {
+          title: 'Adicionar Momento',
+          goBack: 'Voltar',
+        },
       },
       index: {},
     },

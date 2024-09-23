@@ -53,6 +53,28 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: '/moments',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: 'edit',
+        name: 'moment-edit',
+        component: () => import('pages/moment/EditPage.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'new',
+        name: 'moment-new',
+        component: () => import('pages/moment/NewPage.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+    ],
+  },
 
   // Always leave this as last one,
   // but you can also remove it
