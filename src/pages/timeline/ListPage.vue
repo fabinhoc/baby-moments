@@ -29,14 +29,6 @@
         </q-card-section>
         <q-card-section class="row q-gutter-sm">
           <q-btn
-            color="positive"
-            size="sm"
-            icon="las la-plus"
-            rounded
-            unelevated
-            >{{ $t('app.pages.timeline.list.addMoment') }}</q-btn
-          >
-          <q-btn
             color="info"
             outline
             size="sm"
