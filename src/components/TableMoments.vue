@@ -97,7 +97,12 @@ const columns: any = [
             $t('app.components.tableMoments.video', 0)
           }}</q-btn
         >
-        <q-btn color="info" icon="las la-pencil-alt" outline></q-btn>
+        <q-btn
+          color="info"
+          icon="las la-pencil-alt"
+          :to="{ name: 'moment-edit' }"
+          outline
+        ></q-btn>
         <q-btn color="negative" icon="las la-trash" outline></q-btn>
       </q-td>
     </template>
@@ -147,7 +152,13 @@ const columns: any = [
                   >
                 </q-item-label>
                 <q-item-label>
-                  <q-btn class="q-mr-sm" color="info" outline>Editar</q-btn>
+                  <q-btn
+                    class="q-mr-sm"
+                    color="info"
+                    outline
+                    :to="{ name: 'moment-edit' }"
+                    >Editar</q-btn
+                  >
                   <q-btn color="negative" outline>Remover</q-btn>
                 </q-item-label>
               </q-item-section>

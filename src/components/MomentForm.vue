@@ -31,14 +31,14 @@ const clear = () => {
     title: null,
     description: null,
     avatar: null,
-    color: null,
+    color: '#eeeeee',
   };
   formMoment.value.reset();
 };
 </script>
 
 <template>
-  <q-form ref="momentForm" @submit.prevent="handleSubmit">
+  <q-form ref="formMoment" @submit.prevent="handleSubmit">
     <div class="row q-col-gutter-md">
       <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
         <q-input
