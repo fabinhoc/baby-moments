@@ -51,6 +51,8 @@ export default {
         actions: 'Actions',
         photo: 'Photo | Photos',
         video: 'Video | Videos',
+        edit: 'Edit',
+        remove: 'Remove',
       },
     },
     pages: {

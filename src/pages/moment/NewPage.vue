@@ -10,7 +10,7 @@ defineOptions({
 <template>
   <q-page padding>
     <div class="column q-gutter-y-sm">
-      <q-card flat>
+      <q-card>
         <PageTitle
           :title="$t('app.pages.moment.new.title')"
           class="text-center"

@@ -48,6 +48,8 @@ export default {
         actions: 'Ações',
         photo: 'Foto | Fotos',
         video: 'Vídeo | Vídeos',
+        edit: 'Editar',
+        remove: 'Remover',
       },
     },
     pages: {
