@@ -37,6 +37,9 @@ export default {
         save: 'Salvar',
         cancel: 'Cancelar',
         theme: 'Tema',
+        position: 'Ordem',
+        positionHint:
+          'Adicione ordem de posição em que o momento será visualiado na linha do tempo. Ex: 1,2,3,4...',
       },
       tableMoments: {
         title: 'Título',
@@ -83,6 +86,12 @@ export default {
         },
       },
       index: {},
+      album: {
+        save: {
+          goBack: 'Voltar',
+          title: 'Álbum de fotos/vídeos',
+        },
+      },
     },
   },
 };

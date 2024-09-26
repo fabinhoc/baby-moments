@@ -3,4 +3,5 @@ export interface MomentDto {
   description: string | null;
   color: string | null;
   avatar: File | null;
+  position: number | null;
 }
