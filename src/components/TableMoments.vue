@@ -90,7 +90,12 @@ const columns: any = [
     </template>
     <template v-slot:body-cell-actions="props">
       <q-td :props="props" class="q-gutter-sm">
-        <q-btn color="secondary" icon="las la-image" no-caps>
+        <q-btn
+          color="secondary"
+          icon="las la-image"
+          no-caps
+          :to="{ name: 'album-save' }"
+        >
           {{
             $t('app.components.tableMoments.photo', 0) +
             '/' +
@@ -143,7 +148,12 @@ const columns: any = [
               </q-item-section>
               <q-item-section v-else-if="col.name === 'actions'" side>
                 <q-item-label class="q-py-sm">
-                  <q-btn color="secondary" icon="las la-image" no-caps>
+                  <q-btn
+                    color="secondary"
+                    icon="las la-image"
+                    no-caps
+                    :to="{ name: 'album-save' }"
+                  >
                     {{
                       $t('app.components.tableMoments.photo', 0) +
                       '/' +
@@ -157,9 +167,11 @@ const columns: any = [
                     color="info"
                     outline
                     :to="{ name: 'moment-edit' }"
-                    >Editar</q-btn
+                    >{{ $t('app.components.tableMoments.edit') }}</q-btn
                   >
-                  <q-btn color="negative" outline>Remover</q-btn>
+                  <q-btn color="negative" outline>{{
+                    $t('app.components.tableMoments.remove')
+                  }}</q-btn>
                 </q-item-label>
               </q-item-section>
               <q-item-section v-else side>

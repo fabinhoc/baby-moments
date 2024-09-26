@@ -75,6 +75,20 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: '/albums',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: 'save',
+        name: 'album-save',
+        component: () => import('pages/album/SavePage.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+    ],
+  },
 
   // Always leave this as last one,
   // but you can also remove it

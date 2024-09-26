@@ -40,6 +40,9 @@ export default {
         save: 'Save',
         cancel: 'Cancel',
         theme: 'Theme',
+        postion: 'Position',
+        positionHint:
+          'Add order of position in which the moment will be displayed on the timeline. Eg: 1,2,3,4...',
       },
       tableMoments: {
         title: 'Title',
@@ -51,6 +54,8 @@ export default {
         actions: 'Actions',
         photo: 'Photo | Photos',
         video: 'Video | Videos',
+        edit: 'Edit',
+        remove: 'Remove',
       },
     },
     pages: {
@@ -84,6 +89,12 @@ export default {
         },
       },
       index: {},
+      album: {
+        save: {
+          goBack: 'Go back',
+          title: 'Photos/videos album',
+        },
+      },
     },
   },
 };

@@ -14,12 +14,14 @@ const form: Ref<MomentDto> = ref({
   description: null,
   avatar: null,
   color: '#eeeeee',
+  position: null,
 });
 const rules = {
   title: { required },
   description: {},
   avatar: {},
   color: {},
+  position: { required },
 };
 
 const v$ = useVuelidate(rules, form);
@@ -32,6 +34,7 @@ const clear = () => {
     description: null,
     avatar: null,
     color: '#eeeeee',
+    position: null,
   };
   formMoment.value.reset();
 };
@@ -49,6 +52,20 @@ const clear = () => {
           :rules="[
             () => !v$.title.required.$invalid || $t('validations.required'),
           ]"
+        >
+        </q-input>
+      </div>
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+        <q-input
+          v-model="v$.position.$model"
+          :label="$t('app.components.momentForm.position')"
+          type="number"
+          lazy-rules
+          outlined
+          :rules="[
+            () => !v$.position.required.$invalid || $t('validations.required'),
+          ]"
+          :hint="$t('app.components.momentForm.positionHint')"
         >
         </q-input>
       </div>
