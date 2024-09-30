@@ -27,7 +27,7 @@ const handleSubmit = async () => {
     const validate = await v$.value.$validate();
     if (!validate) return false;
     await service.forgotPassword(form.value);
-    router.push({ name: 'resetPasswordConfirmation' });
+    router.push({ name: 'reset-password-confirmation' });
   } catch (error: any) {
     console.log(error);
     const message = error?.response?.data?.message ?? error;

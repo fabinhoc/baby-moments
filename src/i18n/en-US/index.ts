@@ -131,6 +131,13 @@ export default {
         remember: 'Remember It?',
         signin: 'Sign in',
       },
+      resetPasswordConfirmation: {
+        title: 'Recouver your password',
+        message: 'We have sent you a password recouver email. Please check it.',
+        emailNotSent: "Didn't receive an email?",
+        resend: 'Resend',
+        backToLogin: 'Back to login',
+      },
     },
   },
 };

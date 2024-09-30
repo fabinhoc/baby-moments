@@ -130,6 +130,14 @@ export default {
         remember: 'Lembrou a senha?',
         signin: 'Entrar',
       },
+      resetPasswordConfirmation: {
+        title: 'Recuperar senha',
+        message:
+          'Enviamos uma mensagem para seu endereço de e-mail. Por favor, verifique seu e-mail.',
+        emailNotSent: 'Não recebeu nenhum e-mail?',
+        resend: 'Reenviar',
+        backToLogin: 'Voltar para login',
+      },
     },
   },
 };
