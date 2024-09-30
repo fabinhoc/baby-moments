@@ -117,6 +117,10 @@ export default {
         responseOk:
           'Email verified successfully! Please visit the login page again.',
       },
+      errorNotFound: {
+        message: 'Oops. Nothing here...',
+        goHome: 'Go home',
+      },
     },
   },
 };

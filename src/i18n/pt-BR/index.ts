@@ -114,6 +114,10 @@ export default {
         responseOk:
           'E-mail verificado com sucesso! Acesse a página de login novamente.',
       },
+      errorNotFound: {
+        message: 'Oops. Nada por aqui...',
+        goHome: 'Voltar para página principal',
+      },
     },
   },
 };
