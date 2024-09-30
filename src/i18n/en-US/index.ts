@@ -62,6 +62,10 @@ export default {
         password: 'Password',
         login: 'Login',
       },
+      formForgotPassword: {
+        email: 'Email',
+        reset: 'Reset',
+      },
     },
     pages: {
       timeline: {
@@ -120,6 +124,12 @@ export default {
       errorNotFound: {
         message: 'Oops. Nothing here...',
         goHome: 'Go home',
+      },
+      forgotPassword: {
+        title: 'Reset Password',
+        message: 'Please, type your e-mail.',
+        remember: 'Remember It?',
+        signin: 'Sign in',
       },
     },
   },

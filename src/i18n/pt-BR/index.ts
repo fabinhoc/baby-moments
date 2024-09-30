@@ -59,6 +59,10 @@ export default {
         password: 'Senha',
         login: 'Entrar',
       },
+      formForgotPassword: {
+        email: 'E-mail',
+        reset: 'Enviar',
+      },
     },
     pages: {
       timeline: {
@@ -117,6 +121,14 @@ export default {
       errorNotFound: {
         message: 'Oops. Nada por aqui...',
         goHome: 'Voltar para página principal',
+      },
+      forgotPassword: {
+        title: 'Recuperar senha',
+        message: 'Por favor, insira seu endereço de e-mail.',
+        email: 'E-mail',
+        reset: 'Enviar',
+        remember: 'Lembrou a senha?',
+        signin: 'Entrar',
       },
     },
   },

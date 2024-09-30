@@ -13,9 +13,12 @@ defineOptions({
         <q-card-section>
           <FormLogin />
           <div class="q-mt-lg">
-            <q-btn to="/auth/forgot-password" color="accent" flat>{{
-              $t('app.pages.login.forgotPassword')
-            }}</q-btn>
+            <q-btn
+              @click="$router.push({ name: 'forgot-password' })"
+              color="accent"
+              flat
+              >{{ $t('app.pages.login.forgotPassword') }}</q-btn
+            >
             <q-btn to="/auth/register" color="negative" flat>{{
               $t('app.pages.login.createAccount')
             }}</q-btn>

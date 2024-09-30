@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia';
 import useApi from 'src/composables/useApi';
 // import { RegisterDto } from 'src/dto/Register.dto';
 // import { ResetPasswordDto } from 'src/dto/ResetPassword.dto';
-// import { ForgotPasswordDto } from 'src/dto/ForgotPassword.dto';
+import { ForgotPasswordDto } from 'src/types/dto/ForgotPassword.dto';
 // import { useRouter } from 'vue-router';
 
 export default function useAuthService() {
@@ -64,14 +64,14 @@ export default function useAuthService() {
   //   }
   // };
 
-  // const forgotPassword = (payload: ForgotPasswordDto) => {
-  //   try {
-  //     const { post } = useApi('auth/forgot-password');
-  //     return post(payload);
-  //   } catch (error: unknown) {
-  //     throw error;
-  //   }
-  // };
+  const forgotPassword = (payload: ForgotPasswordDto) => {
+    try {
+      const { post } = useApi('forgot-password');
+      return post(payload);
+    } catch (error: unknown) {
+      throw error;
+    }
+  };
 
   const logout = () => {
     try {
@@ -89,5 +89,6 @@ export default function useAuthService() {
     logout,
     resendVerification,
     verifyEmail,
+    forgotPassword,
   };
 }
