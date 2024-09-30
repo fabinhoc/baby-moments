@@ -1,7 +1,18 @@
 <script setup lang="ts">
+import useAuthService from 'src/services/auth.service';
+import { useRouter } from 'vue-router';
+
 defineOptions({
   name: 'BtnUser',
 });
+
+const router = useRouter();
+
+const logout = () => {
+  const { logout } = useAuthService();
+  logout();
+  router.push({ name: 'login' });
+};
 </script>
 
 <template>
@@ -34,7 +45,7 @@ defineOptions({
           }}</q-item-label>
         </q-item-section>
       </q-item>
-      <q-item clickable v-close-popup>
+      <q-item clickable v-close-popup @click="logout">
         <q-item-section avatar>
           <q-avatar
             icon="las la-sign-out-alt"

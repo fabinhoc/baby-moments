@@ -57,6 +57,11 @@ export default {
         edit: 'Edit',
         remove: 'Remove',
       },
+      formLogin: {
+        email: 'Email',
+        password: 'Password',
+        login: 'Login',
+      },
     },
     pages: {
       timeline: {
@@ -94,6 +99,23 @@ export default {
           goBack: 'Go back',
           title: 'Photos/videos album',
         },
+      },
+      login: {
+        forgotPassword: 'Forgot your password?',
+        createAccount: 'Create an account',
+      },
+      emailVerification: {
+        title: 'Verify your email',
+        message: 'We have sent you verification email {email}',
+        checkIt: 'Please check it',
+        notReceivedYet: "Didn't receive an email?",
+        resend: 'Resend',
+        gotoLogin: 'Go to login page',
+      },
+      verify: {
+        backToLogin: 'Back to login page',
+        responseOk:
+          'Email verified successfully! Please visit the login page again.',
       },
     },
   },

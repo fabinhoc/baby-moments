@@ -24,6 +24,33 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/auth',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: 'login',
+        name: 'login',
+        component: () => import('pages/auth/LoginPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
+      {
+        path: 'email-verification',
+        name: 'email-verification',
+        component: () => import('pages/auth/EmailVerificationPage.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'verify',
+        name: 'verify',
+        component: () => import('pages/auth/VerifyPage.vue'),
+      },
+    ],
+  },
+  {
     path: '/timeline',
     component: () => import('layouts/MainLayout.vue'),
     children: [

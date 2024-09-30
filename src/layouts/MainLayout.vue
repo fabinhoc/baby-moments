@@ -14,7 +14,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container class="q-mb-xl q-mt-lg">
+    <q-page-container>
       <router-view />
     </q-page-container>
 

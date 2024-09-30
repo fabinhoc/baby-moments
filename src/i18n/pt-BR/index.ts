@@ -54,6 +54,11 @@ export default {
         edit: 'Editar',
         remove: 'Remover',
       },
+      formLogin: {
+        email: 'E-mail',
+        password: 'Senha',
+        login: 'Entrar',
+      },
     },
     pages: {
       timeline: {
@@ -91,6 +96,23 @@ export default {
           goBack: 'Voltar',
           title: 'Álbum de fotos/vídeos',
         },
+      },
+      login: {
+        forgotPassword: 'Esqueceu sua senha?',
+        createAccount: 'Criar uma conta',
+      },
+      emailVerification: {
+        title: 'Verifique seu e-mail',
+        message: 'Enviamos um e-mail de verificação para {email}',
+        checkIt: 'Por favor, verifique seu e-mail',
+        notReceivedYet: 'Não recebeu nenhum e-mail?',
+        resend: 'Reenviar',
+        gotoLogin: 'Voltar para login',
+      },
+      verify: {
+        backToLogin: 'Voltar para a página de login',
+        responseOk:
+          'E-mail verificado com sucesso! Acesse a página de login novamente.',
       },
     },
   },
