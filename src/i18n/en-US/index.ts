@@ -66,6 +66,11 @@ export default {
         email: 'Email',
         reset: 'Reset',
       },
+      formResetPassword: {
+        password: 'Password',
+        passwordConfirmation: 'Confirm Password',
+        save: 'Save',
+      },
     },
     pages: {
       timeline: {
@@ -137,6 +142,16 @@ export default {
         emailNotSent: "Didn't receive an email?",
         resend: 'Resend',
         backToLogin: 'Back to login',
+      },
+      resetPassword: {
+        title: 'Create new password',
+        message: 'Please, type your new password.',
+        save: 'Save',
+        remember: 'Remember It?',
+        signin: 'Sign in',
+        messageSuccess:
+          'Password updated with success. You are been redirecting for login page in: ',
+        seconds: '{seconds} second(s)',
       },
     },
   },

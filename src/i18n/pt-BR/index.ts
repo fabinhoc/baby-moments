@@ -63,6 +63,11 @@ export default {
         email: 'E-mail',
         reset: 'Enviar',
       },
+      formResetPassword: {
+        password: 'Senha',
+        passwordConfirmation: 'Confirmar senha',
+        save: 'Salvar',
+      },
     },
     pages: {
       timeline: {
@@ -137,6 +142,16 @@ export default {
         emailNotSent: 'Não recebeu nenhum e-mail?',
         resend: 'Reenviar',
         backToLogin: 'Voltar para login',
+      },
+      resetPassword: {
+        title: 'Criar nova senha',
+        message: 'Por favor, digite sua nova senha.',
+        save: 'Salvar',
+        remember: 'Lembrou a senha?',
+        signin: 'Entrar',
+        messageSuccess:
+          'Senha alterada com successo. Você será redirecionado para a página de login em: ',
+        seconds: '{seconds} segundos(s)',
       },
     },
   },

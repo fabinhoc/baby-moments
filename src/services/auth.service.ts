@@ -3,7 +3,7 @@ import { LoginDto } from 'src/types/dto/Login.dto';
 import { storeToRefs } from 'pinia';
 import useApi from 'src/composables/useApi';
 // import { RegisterDto } from 'src/dto/Register.dto';
-// import { ResetPasswordDto } from 'src/dto/ResetPassword.dto';
+import { ResetPasswordDto } from 'src/types/dto/ResetPassword.dto';
 import { ForgotPasswordDto } from 'src/types/dto/ForgotPassword.dto';
 // import { useRouter } from 'vue-router';
 
@@ -55,14 +55,14 @@ export default function useAuthService() {
     }
   };
 
-  // const resetPassword = (payload: ResetPasswordDto) => {
-  //   try {
-  //     const { post } = useApi('auth/reset-password');
-  //     return post(payload);
-  //   } catch (error: unknown) {
-  //     throw error;
-  //   }
-  // };
+  const resetPassword = (payload: ResetPasswordDto) => {
+    try {
+      const { post } = useApi('reset-password');
+      return post(payload);
+    } catch (error: unknown) {
+      throw error;
+    }
+  };
 
   const forgotPassword = (payload: ForgotPasswordDto) => {
     try {
@@ -90,5 +90,6 @@ export default function useAuthService() {
     resendVerification,
     verifyEmail,
     forgotPassword,
+    resetPassword,
   };
 }
