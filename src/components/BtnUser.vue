@@ -27,7 +27,11 @@ const logout = () => {
     class="btn-user"
   >
     <q-list>
-      <q-item clickable v-close-popup>
+      <q-item
+        clickable
+        v-close-popup
+        @click="$router.push({ name: 'profile' })"
+      >
         <q-item-section avatar>
           <q-avatar icon="las la-pen" text-color="black" flat round />
         </q-item-section>

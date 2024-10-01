@@ -71,6 +71,19 @@ export default {
         passwordConfirmation: 'Confirm Password',
         save: 'Save',
       },
+      formUser: {
+        name: 'Name',
+        email: 'Email',
+        save: 'Save',
+        clear: 'Clear',
+      },
+      updatePasswordForm: {
+        currentPassword: 'Current Password',
+        newPassword: 'New Password',
+        passwordConfirmation: 'Confirm new Password',
+        save: 'Save',
+        clear: 'Clear',
+      },
     },
     pages: {
       timeline: {
@@ -152,6 +165,26 @@ export default {
         messageSuccess:
           'Password updated with success. You are been redirecting for login page in: ',
         seconds: '{seconds} second(s)',
+      },
+      user: {
+        profile: {
+          goBack: 'Go back',
+          infoTitle: 'Personal information',
+          updatePasswordTitle: 'Update your password',
+          sigature: 'My signature',
+          signatureInfo:
+            "You are currently using the <span class='text-uppercase text-weight-bold'>{signature}</span> signature",
+          history: 'History',
+          adquiredSignature:
+            "Purchased subscription <span class='text-uppercase text-weight-bold'>{signature}</span> of <span class='text-uppercase text-weight-bold'>{size}</span by <span class='text-uppercase text-weight-bold'>{price}</span>",
+          labelSlider: 'Available space:',
+          upgrade: 'Do upgrade',
+          cancelSignature: 'Cancel your signature',
+          accountTitle: 'My account',
+          deleteAccountInfo:
+            "If you choose to delete your account, all of your data and photos/videos will be <span class='text-uppercase text-weight-bold'>deleted</span> from our database. You will <span class='text-uppercase text-weight-bold'>no longer have access to the platform</span> and it will not be possible to <span class='text-uppercase text-weight-bold'>recover your data again</span>.",
+          btnDelete: 'I AM AWARE, Delete my account',
+        },
       },
     },
   },
