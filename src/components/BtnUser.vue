@@ -39,7 +39,11 @@ const logout = () => {
           <q-item-label>{{ $t('app.components.btnUser.edit') }}</q-item-label>
         </q-item-section>
       </q-item>
-      <q-item clickable v-close-popup>
+      <q-item
+        clickable
+        v-close-popup
+        @click="$router.push({ name: 'profile', hash: '#signature' })"
+      >
         <q-item-section avatar>
           <q-avatar icon="las la-signature" text-color="primary" flat round />
         </q-item-section>

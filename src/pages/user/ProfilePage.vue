@@ -44,7 +44,7 @@ const spacingPlanLabel: ComputedRef<string> = computed(
             <UpdatePasswordForm />
           </div>
         </q-card-section>
-        <q-card-section class="column q-col-gutter-md">
+        <q-card-section class="column q-col-gutter-md" id="signature">
           <div>
             <ProfileSectionTitle :title="$t('app.pages.user.profile.sigature')" :icon="'las la-signature'" />
           </div>
