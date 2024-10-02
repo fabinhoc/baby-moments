@@ -14,7 +14,7 @@ export default function useApi(url: string) {
   const findById = async (id: number | string) => {
     try {
       const { data } = await api.get(`${url}/${id}`);
-      return data;
+      return data.data;
     } catch (error: unknown) {
       throw error;
     }

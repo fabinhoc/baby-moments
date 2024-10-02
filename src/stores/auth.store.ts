@@ -34,7 +34,6 @@ export const useAuthStore = defineStore('login', {
       this.user = {} as UserType;
       this.token = '';
       api.defaults.headers.common['Authorization'] = '';
-      api.defaults.headers.common['X-Tenant-Id'] = '';
     },
     setUser(user: UserType) {
       this.user = user;

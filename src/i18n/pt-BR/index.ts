@@ -1,6 +1,6 @@
 export default {
-  failed: 'Falha',
-  success: 'Sucesso',
+  failed: 'Falha ao executar ação.',
+  success: 'Ação concluída com sucesso.',
   validations: {
     required: 'Este campo é obrigatório',
     string: 'Este campo não pode ser numérico',

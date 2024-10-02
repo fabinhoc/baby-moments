@@ -5,6 +5,7 @@ import useApi from 'src/composables/useApi';
 // import { RegisterDto } from 'src/dto/Register.dto';
 import { ResetPasswordDto } from 'src/types/dto/ResetPassword.dto';
 import { ForgotPasswordDto } from 'src/types/dto/ForgotPassword.dto';
+import { UserDto } from 'src/types/dto/User.dto';
 // import { useRouter } from 'vue-router';
 
 export default function useAuthService() {
@@ -84,6 +85,24 @@ export default function useAuthService() {
     }
   };
 
+  const updateUser = (uuid: string, payload: UserDto) => {
+    try {
+      const { put } = useApi('users');
+      return put(uuid, payload);
+    } catch (error: unknown) {
+      throw error;
+    }
+  };
+
+  const getUser = (uuid: string) => {
+    try {
+      const { findById } = useApi('users');
+      return findById(uuid);
+    } catch (error: unknown) {
+      throw error;
+    }
+  };
+
   return {
     login,
     logout,
@@ -91,5 +110,7 @@ export default function useAuthService() {
     verifyEmail,
     forgotPassword,
     resetPassword,
+    updateUser,
+    getUser,
   };
 }

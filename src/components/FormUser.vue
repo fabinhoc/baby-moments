@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import useVuelidate from '@vuelidate/core';
 import { required, email } from '@vuelidate/validators';
+import useNotify from 'src/composables/useNotify';
+import useAuthService from 'src/services/auth.service';
 import { useAuthStore } from 'src/stores/auth.store';
 import { UserDto } from 'src/types/dto/User.dto';
+import { UserType } from 'src/types/User.type';
 import { Ref, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({
   name: 'FormUser',
 });
 
+const service = useAuthService();
+const { t } = useI18n();
+const notify = useNotify();
 const formUser = ref();
-const { user } = useAuthStore();
+const { user, setUser } = useAuthStore();
 const form: Ref<UserDto> = ref({
   name: user.name,
   email: user.email,
@@ -21,7 +28,21 @@ const rules = {
 };
 const v$ = useVuelidate(rules, form);
 
-const handleSubmit = () => {};
+const handleSubmit = async () => {
+  try {
+    const validate = await v$.value.$validate();
+    if (!validate) return false;
+    await service.updateUser(user.uuid, form.value);
+    const userUpdated: UserType = await service.getUser(user.uuid);
+    console.log(userUpdated);
+    setUser(userUpdated);
+    notify.success(t('success'));
+  } catch (error: any) {
+    console.log(error);
+    const message = error?.response?.data?.message ?? error;
+    notify.error(message);
+  }
+};
 
 const clear = () => {
   form.value = {
