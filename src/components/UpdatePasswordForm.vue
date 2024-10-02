@@ -3,6 +3,10 @@ import { UpdatePasswordDto } from 'src/types/dto/UpdatedPassword.dto';
 import { computed, Ref, ref } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required, sameAs } from '@vuelidate/validators';
+import useAuthService from 'src/services/auth.service';
+import { useAuthStore } from 'src/stores/auth.store';
+import useNotify from 'src/composables/useNotify';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({
   name: 'UpdatePasswordForm',
@@ -18,12 +22,17 @@ const form: Ref<UpdatePasswordDto> = ref({
 const isPwd: Ref<boolean> = ref(true);
 const isPwdCurrentPassword: Ref<boolean> = ref(true);
 const isPwdConfirm: Ref<boolean> = ref(true);
+const service = useAuthService();
+const { user } = useAuthStore();
+const notify = useNotify();
+const { t } = useI18n();
 const rules = computed(() => {
   return {
     current_password: { required },
     password: { required },
     password_confirmation: {
-      sameAs: sameAs(form.value.password),
+      required,
+      sameAsPassword: sameAs(form.value.password),
     },
   };
 });
@@ -41,7 +50,18 @@ const handlePwdConfirm = () => {
   isPwdConfirm.value = !isPwdConfirm.value;
 };
 
-const handleSubmit = () => {};
+const handleSubmit = async () => {
+  try {
+    const validate = await v$.value.$validate();
+    if (!validate) return false;
+    await service.updatePassword(user.uuid, form.value);
+    notify.success(t('success'));
+  } catch (error: any) {
+    console.log(error);
+    const message = error?.response?.data?.message ?? error;
+    notify.error(message);
+  }
+};
 
 const clear = () => {
   form.value = {
@@ -111,9 +131,11 @@ const clear = () => {
           outlined
           :rules="[
             () =>
-              !v$.password_confirmation.sameAs.$invalid ||
               !v$.password_confirmation.required.$invalid ||
               $t('validations.required'),
+            () =>
+              !v$.password_confirmation.sameAsPassword.$invalid ||
+              $t('validations.passwordConfirmation'),
           ]"
         >
           <template v-slot:append>

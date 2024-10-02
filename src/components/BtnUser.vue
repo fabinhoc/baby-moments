@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import useAuthService from 'src/services/auth.service';
+import { useAuthStore } from 'src/stores/auth.store';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 defineOptions({
@@ -7,6 +9,10 @@ defineOptions({
 });
 
 const router = useRouter();
+const user = computed(() => {
+  const { user } = useAuthStore();
+  return user;
+});
 
 const logout = () => {
   const { logout } = useAuthService();
@@ -20,7 +26,7 @@ const logout = () => {
     flat
     rounded
     icon="las la-user"
-    label="Fabio Cruz"
+    :label="user.name"
     color="black"
     no-caps
     dropdown-icon="las la-angle-down"
