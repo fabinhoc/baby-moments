@@ -4,6 +4,12 @@
 export default {
   failed: 'Action failed',
   success: 'Action was successful',
+  confirm: {
+    title: 'Confirmation required',
+    question: 'Are you sure you want this action?',
+    cancel: 'Cancelar',
+    ok: 'Yes',
+  },
   validations: {
     required: 'This field is required',
     string: 'This field must not be a numeric value',
@@ -184,6 +190,8 @@ export default {
           deleteAccountInfo:
             "If you choose to delete your account, all of your data and photos/videos will be <span class='text-uppercase text-weight-bold'>deleted</span> from our database. You will <span class='text-uppercase text-weight-bold'>no longer have access to the platform</span> and it will not be possible to <span class='text-uppercase text-weight-bold'>recover your data again</span>.",
           btnDelete: 'I AM AWARE, Delete my account',
+          deleteConfirmation:
+            'By validating this action all your photos/videos will be permanently deleted.',
         },
       },
     },

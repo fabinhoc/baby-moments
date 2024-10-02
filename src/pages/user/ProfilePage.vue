@@ -2,17 +2,43 @@
 import FormUser from 'src/components/FormUser.vue';
 import ProfileSectionTitle from 'src/components/ProfileSectionTitle.vue';
 import UpdatePasswordForm from 'src/components/UpdatePasswordForm.vue';
+import useDialog from 'src/composables/useDialog';
+import useNotify from 'src/composables/useNotify';
+import useAuthService from 'src/services/auth.service';
+import { useAuthStore } from 'src/stores/auth.store';
 import { computed, ComputedRef, ref, Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 defineOptions({
   name: 'ProfilePage',
 });
 
 const spacingPlan: Ref<number> = ref(50);
-
 const spacingPlanLabel: ComputedRef<string> = computed(
   () => `${spacingPlan.value} GB`
 );
+const dialogConfirmation = useDialog();
+const notify = useNotify()
+const service = useAuthService()
+const { t } = useI18n()
+const { user, logout } = useAuthStore()
+const router = useRouter()
+
+const remove = async () => {
+  try {
+    dialogConfirmation.confirm(t('app.pages.user.profile.deleteConfirmation')).onOk(async () => {
+      await service.remove(user.uuid);
+      notify.success(t('success'));
+      logout()
+      router.push({ name: 'login'})
+    });
+  } catch (error: any) {
+    console.log(error);
+    const message = error?.response?.data?.message ?? error;
+    notify.error(message);
+  }
+};
 </script>
 
 <template>
@@ -143,7 +169,7 @@ const spacingPlanLabel: ComputedRef<string> = computed(
           </div>
           <div>
             <p class="text-body2 text-negative" v-html="$t('app.pages.user.profile.deleteAccountInfo')" />
-            <q-btn color="negative" icon="las la-frown" no-caps>{{ $t('app.pages.user.profile.btnDelete') }}</q-btn>
+            <q-btn @click="remove" color="negative" icon="las la-frown" no-caps>{{ $t('app.pages.user.profile.btnDelete') }}</q-btn>
           </div>
         </q-card-section>
       </q-card>

@@ -1,6 +1,12 @@
 export default {
   failed: 'Falha ao executar ação.',
   success: 'Ação concluída com sucesso.',
+  confirm: {
+    title: 'Confirmação obrigatória',
+    question: 'Tem certeza que deseja executar essa ação?',
+    cancel: 'Cancelar',
+    ok: 'Sim',
+  },
   validations: {
     required: 'Este campo é obrigatório',
     string: 'Este campo não pode ser numérico',
@@ -184,6 +190,8 @@ export default {
           deleteAccountInfo:
             "Se você optar em excluir sua conta, todos os seus dados e fotos/vídeos serão <span class='text-uppercase text-weight-bold'>excluídos</span> da nossa base de dados. Você <span class='text-uppercase text-weight-bold'>não terá mais acesso à plataforma</span> e não será possível <span class='text-uppercase text-weight-bold'>recuperar seus dados novamente</span>.",
           btnDelete: 'ESTOU CIENTE, Excluir minha conta',
+          deleteConfirmation:
+            'Ao validar essa ação todos as suas fotos/videos serão excluídos permanentemente.',
         },
       },
     },

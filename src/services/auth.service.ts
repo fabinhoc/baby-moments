@@ -114,6 +114,15 @@ export default function useAuthService() {
     }
   };
 
+  const remove = (uuid: string) => {
+    try {
+      const { remove } = useApi('users');
+      return remove(uuid);
+    } catch (error: unknown) {
+      throw error;
+    }
+  };
+
   return {
     login,
     logout,
@@ -124,5 +133,6 @@ export default function useAuthService() {
     updateUser,
     getUser,
     updatePassword,
+    remove,
   };
 }
