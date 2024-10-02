@@ -1,6 +1,12 @@
 export default {
-  failed: 'Falha',
-  success: 'Sucesso',
+  failed: 'Falha ao executar ação.',
+  success: 'Ação concluída com sucesso.',
+  confirm: {
+    title: 'Confirmação obrigatória',
+    question: 'Tem certeza que deseja executar essa ação?',
+    cancel: 'Cancelar',
+    ok: 'Sim',
+  },
   validations: {
     required: 'Este campo é obrigatório',
     string: 'Este campo não pode ser numérico',
@@ -67,6 +73,19 @@ export default {
         password: 'Senha',
         passwordConfirmation: 'Confirmar senha',
         save: 'Salvar',
+      },
+      formUser: {
+        name: 'Nome',
+        email: 'E-mail',
+        save: 'Salvar',
+        clear: 'Limpar',
+      },
+      updatePasswordForm: {
+        currentPassword: 'Senha atual',
+        newPassword: 'Nova senha',
+        passwordConfirmation: 'Confirmar senha',
+        save: 'Salvar',
+        clear: 'Limpar',
       },
     },
     pages: {
@@ -152,6 +171,28 @@ export default {
         messageSuccess:
           'Senha alterada com successo. Você será redirecionado para a página de login em: ',
         seconds: '{seconds} segundos(s)',
+      },
+      user: {
+        profile: {
+          goBack: 'Voltar',
+          infoTitle: 'Informações pessoais',
+          updatePasswordTitle: 'Alterar Senha',
+          sigature: 'Minha Assinatura',
+          signatureInfo:
+            "Atualmente você está utilizando a assinatura <span class='text-uppercase text-weight-bold'>{signature}</span>",
+          history: 'Histórico',
+          adquiredSignature:
+            "Adquiriu assinatura <span class='text-uppercase text-weight-bold'>{signature}</span> de <span class='text-uppercase text-weight-bold'>{size}</span> por <span class='text-uppercase text-weight-bold'>{price}</span>",
+          labelSlider: 'Espaço disponível:',
+          upgrade: 'Fazer upgrade',
+          cancelSignature: 'Cancelar Assinatura',
+          accountTitle: 'Minha conta',
+          deleteAccountInfo:
+            "Se você optar em excluir sua conta, todos os seus dados e fotos/vídeos serão <span class='text-uppercase text-weight-bold'>excluídos</span> da nossa base de dados. Você <span class='text-uppercase text-weight-bold'>não terá mais acesso à plataforma</span> e não será possível <span class='text-uppercase text-weight-bold'>recuperar seus dados novamente</span>.",
+          btnDelete: 'ESTOU CIENTE, Excluir minha conta',
+          deleteConfirmation:
+            'Ao validar essa ação todos as suas fotos/videos serão excluídos permanentemente.',
+        },
       },
     },
   },
