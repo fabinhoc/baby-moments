@@ -9,13 +9,13 @@ defineOptions({
 });
 
 const router = useRouter();
+const { logout } = useAuthService();
 const user = computed(() => {
   const { user } = useAuthStore();
   return user;
 });
 
-const logout = () => {
-  const { logout } = useAuthService();
+const logoutUser = () => {
   logout();
   router.push({ name: 'login' });
 };
@@ -59,7 +59,7 @@ const logout = () => {
           }}</q-item-label>
         </q-item-section>
       </q-item>
-      <q-item clickable v-close-popup @click="logout">
+      <q-item clickable v-close-popup @click="logoutUser">
         <q-item-section avatar>
           <q-avatar
             icon="las la-sign-out-alt"

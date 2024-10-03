@@ -108,6 +108,8 @@ export default {
           add: 'Add new',
           edit: 'Edit',
           addMoment: 'Add moments',
+          deleteConfirmation:
+            'This action will remove all photos/videos from that timeline. Are you sure about that?',
         },
         view: {},
       },

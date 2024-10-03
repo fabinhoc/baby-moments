@@ -1,14 +1,24 @@
 <script setup lang="ts">
 import { TimelineDto } from 'src/types/dto/Timeline.dto';
-import { Ref, ref } from 'vue';
+import { onMounted, Ref, ref } from 'vue';
 import { required } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
+import useTimelineService from 'src/services/timeline.service';
+import useNotify from 'src/composables/useNotify';
+import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
 
 defineOptions({
   name: 'TimelineForm',
 });
 
+const service = useTimelineService();
+const notify = useNotify();
+const { t } = useI18n();
 const timelineForm = ref();
+const router = useRouter();
+const route = useRoute();
+const uuid = route.params.uuid as string;
 const form: Ref<TimelineDto> = ref({
   title: null,
   description: null,
@@ -19,14 +29,51 @@ const rules = {
 };
 const v$ = useVuelidate(rules, form);
 
-const handleSubmit = () => {};
+onMounted(() => {
+  getTimeline();
+});
+
+const handleSubmit = async () => {
+  try {
+    if (uuid) {
+      await service.put(uuid, form.value);
+      notify.success(t('success'));
+    } else {
+      await service.post(form.value);
+      notify.success(t('success'));
+      clear();
+      router.push({ name: 'timeline-list' });
+    }
+  } catch (error: any) {
+    console.log(error);
+    const message = error?.response?.data?.message ?? error;
+    notify.error(message);
+  }
+};
 
 const clear = () => {
-  form.value = {
-    title: null,
-    description: null,
-  };
+  if (uuid) {
+    getTimeline();
+  } else {
+    form.value = {
+      title: null,
+      description: null,
+    };
+  }
   timelineForm.value.reset();
+};
+
+const getTimeline = async () => {
+  try {
+    if (uuid) {
+      const data = await service.findById(uuid);
+      form.value = data;
+    }
+  } catch (error: any) {
+    console.log(error);
+    const message = error?.response?.data?.message ?? error;
+    notify.error(message);
+  }
 };
 </script>
 

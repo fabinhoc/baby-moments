@@ -78,7 +78,7 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
-        path: 'edit',
+        path: 'edit/:uuid',
         name: 'timeline-edit',
         component: () => import('pages/timeline/EditPage.vue'),
         meta: {
