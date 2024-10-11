@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import FileDataUpload from 'src/components/FileDataUpload.vue';
 import PageTitle from 'src/components/PageTitle.vue';
 
 defineOptions({
@@ -6,6 +7,7 @@ defineOptions({
 });
 
 const theme = '#EF8F71';
+
 const albums: any = [
   {
     title: 'Meu bebezinho fofinho!',
@@ -54,122 +56,78 @@ const albums: any = [
 
 <template>
   <q-page padding>
-    <div class="column q-gutter-sm">
-      <q-card>
-        <PageTitle
-          :title="$t('app.pages.album.save.title')"
-          class="text-center"
-        ></PageTitle>
-        <q-card-section>
-          <q-btn
-            :to="{ name: 'timeline-edit' }"
-            icon="las la-undo"
-            flat
-            rounded
-            color="primary"
-            >{{ $t('app.pages.album.save.goBack') }}</q-btn
-          >
-        </q-card-section>
-        <q-card-section>
-          <div class="column q-gutter-y-md">
-            <q-uploader
-              url="http://localhost:4444/upload"
-              label="Upload de Imagens e fotos"
-              multiple
-              batch
-              style="width: 100%"
-              flat
-              bordered
+    <q-card class="q-py-xs">
+      <PageTitle
+        :title="$t('app.pages.album.save.title')"
+        class="text-center"
+      ></PageTitle>
+      <q-card-section>
+        <q-btn
+          :to="{ name: 'timeline-edit' }"
+          icon="las la-undo"
+          flat
+          rounded
+          color="primary"
+          >{{ $t('app.pages.album.save.goBack') }}</q-btn
+        >
+      </q-card-section>
+      <q-card-section>
+        <FileDataUpload />
+      </q-card-section>
+      <q-card-section>
+        <div class="column q-gutter-y-md">
+          <div class="row q-col-gutter-md q-mt-sm">
+            <div
+              class="col-lg-2 col-md-2 col-sm-12 col-xs-12"
+              v-for="(album, index) in albums"
+              :key="index"
             >
-              <template v-slot:list="scope">
-                <q-list separator>
-                  <q-item v-for="file in scope.files" :key="file.__key">
-                    <q-item-section>
-                      <q-item-label class="full-width ellipsis">
-                        {{ file.name }}
-                      </q-item-label>
-
-                      <q-item-label caption>
-                        Status: {{ file.__status }}
-                      </q-item-label>
-
-                      <q-item-label caption>
-                        {{ file.__sizeLabel }} / {{ file.__progressLabel }}
-                      </q-item-label>
-                    </q-item-section>
-
-                    <q-item-section v-if="file.__img" thumbnail class="gt-xs">
-                      <img :src="file.__img.src" />
-                    </q-item-section>
-
-                    <q-item-section top side>
-                      <q-btn
-                        class="gt-xs"
-                        size="12px"
-                        flat
-                        dense
-                        round
-                        icon="las la-trash"
-                        @click="scope.removeFile(file)"
-                      />
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </template>
-            </q-uploader>
-            <div class="row q-col-gutter-md q-mt-sm">
-              <div
-                class="col-lg-2 col-md-2 col-sm-12 col-xs-12"
-                v-for="(album, index) in albums"
-                :key="index"
+              <q-card
+                :style="{
+                  backgroundColor: theme,
+                  border: '10px solid' + theme,
+                }"
+                dark
               >
-                <q-card
-                  :style="{
-                    backgroundColor: theme,
-                    border: '10px solid' + theme,
-                  }"
-                  dark
-                >
-                  <q-video
-                    v-if="album.media_type === 'video'"
-                    src="https://www.youtube.com/embed/k3_tw44QsZQ?rel=0"
-                  />
-                  <q-img v-else :src="album.file_path" style="height: 200px" />
-                  <q-btn
-                    flat
-                    round
-                    :style="{ backgroundColor: theme }"
-                    :icon="
-                      album.media_type === 'video'
-                        ? 'las la-video'
-                        : 'las la-image'
-                    "
-                    class="absolute"
-                    style="top: 13px; right: -5px; transform: translateY(-50%)"
-                  />
-                  <q-card-section>
-                    <div class="text-h6">
-                      {{ album.title ? album.title : '&nbsp;' }}
-                    </div>
-                  </q-card-section>
-                  <q-card-actions>
-                    <div class="text-body2 text-right">
-                      <q-chip
-                        color="warning"
-                        text-color="black"
-                        icon="las la-cloud-upload-alt"
-                      >
-                        {{ album.size }}
-                      </q-chip>
-                    </div>
-                    <q-btn icon="las la-trash" color="black" flat></q-btn>
-                  </q-card-actions>
-                </q-card>
-              </div>
+                <q-video
+                  v-if="album.media_type === 'video'"
+                  src="https://www.youtube.com/embed/k3_tw44QsZQ?rel=0"
+                />
+                <q-img v-else :src="album.file_path" style="height: 200px" />
+                <q-btn
+                  flat
+                  round
+                  :style="{ backgroundColor: theme }"
+                  :icon="
+                    album.media_type === 'video'
+                      ? 'las la-video'
+                      : 'las la-image'
+                  "
+                  class="absolute"
+                  style="top: 13px; right: -5px; transform: translateY(-50%)"
+                />
+                <q-card-section>
+                  <div class="text-h6">
+                    {{ album.title ? album.title : '&nbsp;' }}
+                  </div>
+                </q-card-section>
+                <q-card-actions>
+                  <div class="text-body2 text-right">
+                    <q-chip
+                      color="warning"
+                      text-color="black"
+                      icon="las la-cloud-upload-alt"
+                    >
+                      {{ album.size }}
+                    </q-chip>
+                  </div>
+                  <q-btn icon="las la-trash" color="black" flat></q-btn>
+                </q-card-actions>
+              </q-card>
             </div>
           </div>
-        </q-card-section>
-      </q-card>
-    </div>
+        </div>
+      </q-card-section>
+    </q-card>
   </q-page>
 </template>
