@@ -80,6 +80,12 @@ const removeFile = (file: UploadFileType) => {
   files.value = files.value.filter((f) => f.file !== file.file);
 };
 
+const uploadAll = () => {
+  for (const fileData of files.value) {
+    uploadFile(fileData);
+  }
+};
+
 const uploadFile = (fileData: UploadFileType) => {
   const file = fileData.file;
   const title = fileData.title ?? '';
@@ -88,16 +94,25 @@ const uploadFile = (fileData: UploadFileType) => {
   let currentChunk = 0;
 
   const onProgress = (progress: number) => {
-    fileData.progress = progress; // Atualiza o progresso
+    fileData.status = UploadFileEnum.UPLOADING;
+    fileData.progress = progress;
   };
 
   const onError = (message: string | null) => {
-    fileData.status = UploadFileEnum.ERROR; // Atualiza o status para ERROR
+    fileData.status = UploadFileEnum.ERROR;
     fileData.error = message;
     console.error(`Erro ao enviar o arquivo: ${fileData.file.name}`);
+    return;
+  };
+
+  const onSuccess = (message: string | null) => {
+    if (fileData.status === UploadFileEnum.ERROR) return;
+    fileData.status = UploadFileEnum.SUCCESS;
+    console.log(message);
   };
 
   // Função para iniciar o upload dos chunks
+
   const startUpload = async () => {
     while (currentChunk < totalChunks) {
       const start = currentChunk * CHUNK_SIZE;
@@ -112,13 +127,7 @@ const uploadFile = (fileData: UploadFileType) => {
       );
       currentChunk++;
     }
-
-    if (
-      currentChunk === totalChunks &&
-      fileData.status !== UploadFileEnum.ERROR
-    ) {
-      fileData.status = UploadFileEnum.SUCCESS;
-    }
+    onSuccess(null);
   };
 
   // Inicia o upload dos chunks
@@ -158,6 +167,17 @@ const uploadChunk = async (
     console.error('Erro ao enviar chunk:', error);
   }
 };
+
+const defineProgressColor = (status: UploadFileEnum): string => {
+  const colors: Record<UploadFileEnum, string> = {
+    [UploadFileEnum.PENDING]: 'default',
+    [UploadFileEnum.SUCCESS]: 'positive',
+    [UploadFileEnum.ERROR]: 'negative',
+    [UploadFileEnum.UPLOADING]: 'info',
+  };
+
+  return colors[status] || 'default';
+};
 </script>
 
 <template>
@@ -189,13 +209,15 @@ const uploadChunk = async (
             icon="las la-cloud-upload-alt"
             color="white"
             text-color="primary"
+            :disable="files.length <= 0"
+            @click="uploadAll"
           >
             <q-tooltip> Fazer upload </q-tooltip>
           </q-btn>
           <q-btn
-            icon="las la-trash"
+            icon="las la-undo-alt"
             color="white"
-            text-color="negative"
+            text-color="info"
             :disable="files.length <= 0"
             @click="removeAll"
           >
@@ -296,11 +318,7 @@ const uploadChunk = async (
                 </q-item-label>
                 <q-item-label lines="1">
                   <q-linear-progress
-                    :color="
-                      file.status === UploadFileEnum.ERROR
-                        ? 'negative'
-                        : 'positive'
-                    "
+                    :color="defineProgressColor(file.status)"
                     stripe
                     size="4px"
                     :value="file.progress"
