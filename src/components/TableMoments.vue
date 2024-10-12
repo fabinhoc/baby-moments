@@ -25,6 +25,14 @@ const columns: any = [
     sortable: false,
   },
   {
+    name: 'position',
+    required: true,
+    label: t('app.components.tableMoments.position'),
+    align: 'center',
+    field: (row: MomentType) => row.position,
+    sortable: false,
+  },
+  {
     name: 'title',
     required: true,
     label: t('app.components.tableMoments.title'),
@@ -33,19 +41,19 @@ const columns: any = [
     sortable: false,
   },
   {
+    name: 'theme',
+    required: true,
+    label: t('app.components.tableMoments.theme'),
+    align: 'left',
+    field: (row: MomentType) => row.theme,
+    sortable: false,
+  },
+  {
     name: 'description',
     required: true,
     label: t('app.components.tableMoments.description'),
     align: 'left',
     field: (row: MomentType) => row.description,
-    sortable: false,
-  },
-  {
-    name: 'color',
-    required: true,
-    label: t('app.components.tableMoments.theme'),
-    align: 'left',
-    field: (row: MomentType) => row.color,
     sortable: false,
   },
   {
@@ -70,13 +78,15 @@ const columns: any = [
       <q-td :props="props">
         <q-avatar>
           <img
+            v-if="props.value"
             :src="props.value"
             :style="{ border: '4px solid' + props.row.color }"
           />
+          <q-icon v-else name="las la-camera"></q-icon>
         </q-avatar>
       </q-td>
     </template>
-    <template v-slot:body-cell-color="props">
+    <template v-slot:body-cell-theme="props">
       <q-td :props="props">
         <q-card
           flat
@@ -94,7 +104,7 @@ const columns: any = [
           color="secondary"
           icon="las la-image"
           no-caps
-          :to="{ name: 'album-save' }"
+          :to="{ name: 'album-save', params: { id: props.row.album.id } }"
         >
           {{
             $t('app.components.tableMoments.photo', 0) +
@@ -152,7 +162,10 @@ const columns: any = [
                     color="secondary"
                     icon="las la-image"
                     no-caps
-                    :to="{ name: 'album-save' }"
+                    :to="{
+                      name: 'album-save',
+                      params: { id: col.value.album.id },
+                    }"
                   >
                     {{
                       $t('app.components.tableMoments.photo', 0) +

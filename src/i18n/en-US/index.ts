@@ -62,6 +62,7 @@ export default {
         video: 'Video | Videos',
         edit: 'Edit',
         remove: 'Remove',
+        position: 'Position',
       },
       formLogin: {
         email: 'Email',

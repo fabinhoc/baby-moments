@@ -122,7 +122,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
-        path: 'save',
+        path: 'save/:id',
         name: 'album-save',
         component: () => import('pages/album/SavePage.vue'),
         meta: {

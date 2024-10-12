@@ -1,57 +1,64 @@
 <script setup lang="ts">
 import FileDataUpload from 'src/components/FileDataUpload.vue';
 import PageTitle from 'src/components/PageTitle.vue';
+import useNotify from 'src/composables/useNotify';
+import useAlbumFileService from 'src/services/abumFile.service';
+import useAlbumService from 'src/services/album.service';
+import { AlbumFileType } from 'src/types/AbumFile.type';
+import { AlbumType } from 'src/types/Album.type';
+import { AlbumFileFileTypeEnum } from 'src/types/enums/AlbumFileFileType.enum';
+import { onMounted, ref, Ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 defineOptions({
   name: 'SaveAlbumPage',
 });
 
-const theme = '#EF8F71';
+onMounted(() => {
+  getAlbum();
+});
 
-const albums: any = [
-  {
-    title: 'Meu bebezinho fofinho!',
-    file_path:
-      'https://conteudo.imguol.com.br/c/entretenimento/d7/2020/12/24/bebe-sorrindo-1608810066579_v2_450x450.jpg',
-    size: '20KB',
-  },
-  {
-    title: 'Bom diaaaa!',
-    file_path:
-      'https://img.freepik.com/fotos-gratis/feche-o-bebe-engatinhando-e-aprendendo-a-andar_23-2149294555.jpg',
-    size: '18KB',
-  },
-  {
-    title: 'Ebaaa! Vamos brincar!!',
-    file_path:
-      'https://img.freepik.com/fotos-gratis/bebe-com-bicho-de-pelucia_52683-124509.jpg',
-    size: '16KB',
-  },
-  {
-    title: 'Ebaaa! Vamos brincar!!',
-    file_path:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4rW3QFK44c651tosv3o0hMwIV5Z3CMx5qCw&s',
-    size: '7KB',
-  },
-  {
-    title: 'Soninho da tarde',
-    file_path:
-      'https://www.cpaps.com.br/blog/wp-content/uploads/2022/01/como-vestir-o-bebe-para-dormir-no-verao-1000x608.jpg',
-    size: '25KB',
-  },
-  {
-    title: '',
-    file_path:
-      'https://cdn.dooca.store/1707/products/mg-7665-1.jpg?v=1637058135',
-    size: '8KB',
-  },
-  {
-    title: 'Passeando com a família',
-    media_type: 'video',
-    file_path: 'https://www.youtube.com/embed/k3_tw44QsZQ?rel=0',
-    size: '8GB',
-  },
-];
+const route = useRoute();
+const id = route.params.id as string;
+const service = useAlbumService();
+const albumFileService = useAlbumFileService();
+const notify = useNotify();
+const album: Ref<AlbumType | null> = ref(null);
+const albumFiles: Ref<AlbumFileType[]> = ref([]);
+const theme: Ref<string> = ref('#eee');
+
+const getAlbum = async () => {
+  try {
+    if (id) {
+      const response = await service.findById(id);
+      album.value = response;
+      albumFiles.value = response.album_files.data.map((file: any) => {
+        return {
+          ...file,
+          file_path: `${process.env.STORAGE_URL}${file.file_path}`, // Adiciona a URL
+        };
+      });
+      theme.value = response.moment.theme;
+    }
+  } catch (error: any) {
+    console.log(error);
+    const message = error?.response?.data?.message ?? error;
+    notify.error(message);
+  }
+};
+
+const removeAlbumFile = async (id: number) => {
+  try {
+    if (id) {
+      await albumFileService.remove(id);
+      getAlbum();
+    }
+  } catch (error: any) {
+    console.log(error);
+    const message = error?.response?.data?.message ?? error;
+    notify.error(message);
+  }
+};
 </script>
 
 <template>
@@ -63,7 +70,10 @@ const albums: any = [
       ></PageTitle>
       <q-card-section>
         <q-btn
-          :to="{ name: 'timeline-edit' }"
+          :to="{
+            name: 'timeline-edit',
+            params: { uuid: album?.moment.timeline.uuid },
+          }"
           icon="las la-undo"
           flat
           rounded
@@ -79,7 +89,7 @@ const albums: any = [
           <div class="row q-col-gutter-md q-mt-sm">
             <div
               class="col-lg-2 col-md-2 col-sm-12 col-xs-12"
-              v-for="(album, index) in albums"
+              v-for="(albumFile, index) in albumFiles"
               :key="index"
             >
               <q-card
@@ -89,17 +99,25 @@ const albums: any = [
                 }"
                 dark
               >
-                <q-video
-                  v-if="album.media_type === 'video'"
-                  src="https://www.youtube.com/embed/k3_tw44QsZQ?rel=0"
+                <video
+                  class="full-width"
+                  v-if="albumFile.file_type === AlbumFileFileTypeEnum.VIDEO"
+                  :src="albumFile.file_path"
+                  :autoplay="false"
+                  style="height: 200px"
+                  controls
                 />
-                <q-img v-else :src="album.file_path" style="height: 200px" />
+                <q-img
+                  v-else
+                  :src="`${albumFile.file_path}`"
+                  style="height: 200px"
+                />
                 <q-btn
                   flat
                   round
                   :style="{ backgroundColor: theme }"
                   :icon="
-                    album.media_type === 'video'
+                    albumFile.file_type === AlbumFileFileTypeEnum.VIDEO
                       ? 'las la-video'
                       : 'las la-image'
                   "
@@ -108,7 +126,7 @@ const albums: any = [
                 />
                 <q-card-section>
                   <div class="text-h6">
-                    {{ album.title ? album.title : '&nbsp;' }}
+                    {{ albumFile.title ? albumFile.title : '&nbsp;' }}
                   </div>
                 </q-card-section>
                 <q-card-actions>
@@ -118,10 +136,15 @@ const albums: any = [
                       text-color="black"
                       icon="las la-cloud-upload-alt"
                     >
-                      {{ album.size }}
+                      {{ albumFile.memory_usage }}
                     </q-chip>
                   </div>
-                  <q-btn icon="las la-trash" color="black" flat></q-btn>
+                  <q-btn
+                    @click="removeAlbumFile(albumFile.id)"
+                    icon="las la-trash"
+                    color="black"
+                    flat
+                  ></q-btn>
                 </q-card-actions>
               </q-card>
             </div>
