@@ -88,6 +88,19 @@ export default {
         save: 'Salvar',
         clear: 'Limpar',
       },
+      fileDataUpload: {
+        makeUpload: 'Faça upload dos seus arquivos',
+        selectFiles: 'Clique para selecionar os arquivos',
+        upload: 'Fazer upload',
+        removeAll: 'Remover todos',
+        totalSelected: 'Total selecionado:',
+        file: 'Arquivo | Arquivos',
+        addTitlePlaceholder: 'Adicione um título aqui',
+        size: 'Tamanho',
+        type: 'Tipo',
+        name: 'Nome',
+        status: 'Status',
+      },
     },
     pages: {
       timeline: {
