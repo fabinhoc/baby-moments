@@ -14,9 +14,17 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
-        path: '/timeline',
+        path: '/timeline/:uuid',
         name: 'view-timeline',
         component: () => import('pages/timeline/ViewPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
+      {
+        path: '/album/:id',
+        name: 'view-album',
+        component: () => import('pages/album/ViewPage.vue'),
         meta: {
           requiresAuth: false,
         },

@@ -11,4 +11,5 @@ export interface MomentType {
   position: number | null;
   created_at?: Date | null;
   updated_at?: Date | null;
+  isVisible?: boolean | null;
 }
