@@ -3,9 +3,12 @@ import { MomentDto } from 'src/types/dto/Moment.dto';
 import { Ref, ref } from 'vue';
 import { required } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
+import { Cropper } from 'vue-advanced-cropper';
+import 'vue-advanced-cropper/dist/style.css';
 
 defineOptions({
   name: 'momentForm',
+  components: { Cropper },
 });
 
 const formMoment = ref();
@@ -38,10 +41,22 @@ const clear = () => {
   };
   formMoment.value.reset();
 };
+
+const change = ({ coordinates, canvas }: any) => {
+  console.log(coordinates, canvas);
+};
 </script>
 
 <template>
   <q-form ref="formMoment" @submit.prevent="handleSubmit">
+    <cropper
+      class="cropper"
+      src="https://images.unsplash.com/photo-1600984575359-310ae7b6bdf2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"
+      :stencil-props="{
+        aspectRatio: 10 / 12,
+      }"
+      @change="change"
+    />
     <div class="row q-col-gutter-md">
       <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
         <q-input
