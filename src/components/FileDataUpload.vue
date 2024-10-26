@@ -22,6 +22,8 @@ defineOptions({
   name: 'FileDataUpload',
 });
 
+const emit = defineEmits(['uploaded']);
+
 const service = useAlbumFileService();
 const fileInput: Ref<HTMLInputElement | null> = ref(null);
 const files: Ref<UploadFileType[]> = ref([]);
@@ -29,7 +31,7 @@ const CHUNK_SIZE = 8 * 1024 * 1024;
 const totalSize = computed(() => {
   return files.value.reduce((total, fileObj) => {
     return total + fileObj.file.size;
-  }, 0); // 0 é o valor inicial
+  }, 0);
 });
 
 const openFilePicker = () => {
@@ -37,7 +39,6 @@ const openFilePicker = () => {
   fileInput.value.click();
 };
 
-// Função para lidar com a seleção de arquivos
 const handleFileChange = (event: any) => {
   const target = event.target as HTMLInputElement;
 
@@ -108,10 +109,9 @@ const uploadFile = (fileData: UploadFileType) => {
   const onSuccess = (message: string | null) => {
     if (fileData.status === UploadFileEnum.ERROR) return;
     fileData.status = UploadFileEnum.SUCCESS;
+    emit('uploaded');
     console.log(message);
   };
-
-  // Função para iniciar o upload dos chunks
 
   const startUpload = async () => {
     while (currentChunk < totalChunks) {
@@ -130,7 +130,6 @@ const uploadFile = (fileData: UploadFileType) => {
     onSuccess(null);
   };
 
-  // Inicia o upload dos chunks
   startUpload();
 };
 
@@ -156,9 +155,7 @@ const uploadChunk = async (
   formData.append('title', title.toString());
 
   try {
-    // Envia o chunk para o servidor
     await service.uploadChunks(formData);
-    // Atualiza o progresso
     const progress = (chunkNumber + 1) / totalChunks;
     onProgress(progress);
   } catch (error: any) {
@@ -193,7 +190,7 @@ const defineProgressColor = (status: UploadFileEnum): string => {
       />
       <div class="row">
         <div class="text-body1 text-white q-mb-sm">
-          Faça upload dos seus arquivos
+          {{ $t('app.components.fileDataUpload.makeUpload') }}
         </div>
         <q-space></q-space>
         <div class="row q-gutter-sm">
@@ -203,7 +200,9 @@ const defineProgressColor = (status: UploadFileEnum): string => {
             text-color="dark"
             @click="openFilePicker"
           >
-            <q-tooltip> Clique para selecionar os arquivos </q-tooltip>
+            <q-tooltip>
+              {{ $t('app.components.fileDataUpload.selectFiles') }}
+            </q-tooltip>
           </q-btn>
           <q-btn
             icon="las la-cloud-upload-alt"
@@ -212,7 +211,9 @@ const defineProgressColor = (status: UploadFileEnum): string => {
             :disable="files.length <= 0"
             @click="uploadAll"
           >
-            <q-tooltip> Fazer upload </q-tooltip>
+            <q-tooltip>
+              {{ $t('app.components.fileDataUpload.upload') }}
+            </q-tooltip>
           </q-btn>
           <q-btn
             icon="las la-undo-alt"
@@ -221,17 +222,20 @@ const defineProgressColor = (status: UploadFileEnum): string => {
             :disable="files.length <= 0"
             @click="removeAll"
           >
-            <q-tooltip> Remover todos </q-tooltip>
+            <q-tooltip>
+              {{ $t('app.components.fileDataUpload.removeAll') }}
+            </q-tooltip>
           </q-btn>
         </div>
       </div>
       <div class="q-mt-md text-white">
         <div class="column">
           <div>
-            Total selecionado:
+            {{ $t('app.components.fileDataUpload.totalSelected') }}
             <span class="text-weight-bold"
-              >{{ files?.length ?? 0 }} Arquivo(s)</span
-            >
+              >{{ files?.length ?? 0 }}
+              {{ $t('app.components.fileDataUpload.file', 1) }}
+            </span>
           </div>
           <span class="text-weight-bold">{{ formatFileSize(totalSize) }}</span>
         </div>
@@ -274,7 +278,9 @@ const defineProgressColor = (status: UploadFileEnum): string => {
                   <q-input
                     v-model="file.title"
                     style="max-width: 450px"
-                    :placeholder="'Adicione um título aqui'"
+                    :placeholder="
+                      $t('app.components.fileDataUpload.addTitlePlaceholder')
+                    "
                     lazy-rules
                     input-class="text-weight-bold text-subtitle"
                   >
@@ -285,19 +291,19 @@ const defineProgressColor = (status: UploadFileEnum): string => {
                 </q-item-label>
                 <q-item-label caption lines="1">
                   <span class="text-grey-8 q-mr-lg">
-                    Size:
+                    {{ $t('app.components.fileDataUpload.size') }}:
                     <span class="text-weight-bold">{{
                       formatFileSize(file.file.size)
                     }}</span></span
                   >
                   <span class="text-grey-8 q-mr-lg">
-                    Tipo:
+                    {{ $t('app.components.fileDataUpload.type') }}:
                     <span class="text-weight-bold">{{
                       file.file.type
                     }}</span></span
                   >
                   <span class="text-grey-8 q-mr-lg">
-                    Nome:
+                    {{ $t('app.components.fileDataUpload.name') }}:
                     <span class="text-weight-bold">{{
                       file.file.name
                     }}</span></span
@@ -305,7 +311,7 @@ const defineProgressColor = (status: UploadFileEnum): string => {
                 </q-item-label>
                 <q-item-label caption>
                   <span class="text-grey-8">
-                    Status:
+                    {{ $t('app.components.fileDataUpload.status') }}:
                     <span class="text-weight-bold">{{
                       file.status
                     }}</span></span

@@ -58,7 +58,10 @@ const remove = async (uuid: string) => {
         <q-card-section>
           <div>
             <router-link
-              to="/timeline"
+              :to="{
+                name: 'view-timeline',
+                params: { uuid: timeline.uuid },
+              }"
               class="poppins-regular text-primary text-h6 title"
               target="_blank"
             >

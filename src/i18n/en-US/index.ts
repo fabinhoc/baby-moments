@@ -62,6 +62,7 @@ export default {
         video: 'Video | Videos',
         edit: 'Edit',
         remove: 'Remove',
+        position: 'Position',
       },
       formLogin: {
         email: 'Email',
@@ -89,6 +90,19 @@ export default {
         passwordConfirmation: 'Confirm new Password',
         save: 'Save',
         clear: 'Clear',
+      },
+      fileDataUpload: {
+        makeUpload: 'Upload your files',
+        selectFiles: 'Click to select files',
+        upload: 'Upload',
+        removeAll: 'Remove all',
+        totalSelected: 'Total selected:',
+        file: 'file | files',
+        addTitlePlaceholder: 'Add a title here.',
+        size: 'Size',
+        type: 'Type',
+        name: 'Name',
+        status: 'Status',
       },
     },
     pages: {

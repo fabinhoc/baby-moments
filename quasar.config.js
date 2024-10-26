@@ -56,6 +56,7 @@ module.exports = configure(function (ctx) {
       // analyze: true,
       env: {
         API_URL: ctx.dev ? 'http://localhost/api/' : '',
+        STORAGE_URL: ctx.dev ? 'http://localhost:9000/baby-moments/' : '',
       },
       // rawDefine: {}
       // ignorePublicFolder: true,
