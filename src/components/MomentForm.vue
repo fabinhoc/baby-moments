@@ -3,60 +3,121 @@ import { MomentDto } from 'src/types/dto/Moment.dto';
 import { Ref, ref } from 'vue';
 import { required } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
-import { Cropper } from 'vue-advanced-cropper';
-import 'vue-advanced-cropper/dist/style.css';
+import UploadCropperImage from 'src/components/UploadCropperImage.vue';
+import useMomentService from 'src/services/moment.service';
+import { useI18n } from 'vue-i18n';
+import useNotify from 'src/composables/useNotify';
+import { useRoute, useRouter } from 'vue-router';
 
 defineOptions({
   name: 'momentForm',
-  components: { Cropper },
 });
 
+const openDialog: Ref<boolean> = ref(false);
 const formMoment = ref();
+const service = useMomentService();
+const { t } = useI18n();
+const notify = useNotify();
+const selectedImage: Ref<File | Blob | null> = ref(null);
+const thumbImage: Ref<string | null> = ref(null);
+const route = useRoute();
+const router = useRouter();
 const form: Ref<MomentDto> = ref({
   title: null,
   description: null,
-  avatar: null,
   color: '#eeeeee',
   position: null,
+  avatar: null,
 });
 const rules = {
   title: { required },
   description: {},
-  avatar: {},
   color: {},
   position: { required },
 };
 
 const v$ = useVuelidate(rules, form);
 
-const handleSubmit = () => {};
+const handleSubmit = async () => {
+  try {
+    const formData = new FormData();
+    if (selectedImage.value) {
+      console.log(selectedImage.value);
+      formData.append('avatar', selectedImage.value);
+    }
+    formData.append('title', form.value.title as string);
+    formData.append('description', form.value.description as string);
+    formData.append('position', form.value.position?.toString() as string);
+    formData.append('timeline_id', route.params.timelineUuid.toString());
+
+    await service.post(formData);
+    notify.success(t('success'));
+    clear();
+    router.push({ name: 'timeline-list' });
+  } catch (error: any) {
+    console.log(error);
+    const message = error?.response?.data?.message ?? error;
+    notify.error(message);
+  }
+};
 
 const clear = () => {
   form.value = {
     title: null,
     description: null,
-    avatar: null,
     color: '#eeeeee',
     position: null,
+    avatar: null,
   };
+  thumbImage.value = null;
+  selectedImage.value = null;
   formMoment.value.reset();
 };
 
-const change = ({ coordinates, canvas }: any) => {
-  console.log(coordinates, canvas);
+const setImage = (fileImage: Blob) => {
+  selectedImage.value = fileImage;
+  openDialog.value = false;
+};
+
+const createThumb = (url: string) => {
+  thumbImage.value = url;
 };
 </script>
 
 <template>
-  <q-form ref="formMoment" @submit.prevent="handleSubmit">
-    <cropper
-      class="cropper"
-      src="https://images.unsplash.com/photo-1600984575359-310ae7b6bdf2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"
-      :stencil-props="{
-        aspectRatio: 10 / 12,
-      }"
-      @change="change"
+  <div class="column justify-center items-center q-pa-md">
+    <UploadCropperImage
+      v-model="openDialog"
+      @cropped-image="setImage"
+      @thumb-url="createThumb"
     />
+    <div style="position: relative; display: inline-block">
+      <q-avatar
+        size="80px"
+        clickable
+        class="cursor-pointer"
+        @click="openDialog = true"
+        color="grey-2"
+      >
+        <div v-if="thumbImage">
+          <img :src="thumbImage" />
+        </div>
+        <div v-else>
+          <q-icon name="las la-image"></q-icon>
+        </div>
+      </q-avatar>
+      <q-btn
+        round
+        icon="las la-pencil-alt"
+        color="grey-2"
+        size="xs"
+        text-color="dark"
+        style="position: absolute; top: 0; right: -8px"
+        @click="openDialog = true"
+      />
+    </div>
+  </div>
+  <q-form ref="formMoment" @submit.prevent="handleSubmit">
     <div class="row q-col-gutter-md">
       <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
         <q-input
@@ -118,17 +179,6 @@ const change = ({ coordinates, canvas }: any) => {
           :label="$t('app.components.momentForm.description')"
         >
         </q-input>
-      </div>
-      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
-        <q-file
-          v-model="v$.avatar.$model"
-          counter
-          autogrow
-          outlined
-          use-chips
-          :label="$t('app.components.momentForm.avatar')"
-        >
-        </q-file>
       </div>
       <div class="col-sm-12 col-md-12 col-lg-12 q-gutter-sm">
         <q-btn type="submit" color="primary" outline :disable="v$.$invalid">{{

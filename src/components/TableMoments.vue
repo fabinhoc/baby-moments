@@ -76,7 +76,7 @@ const columns: any = [
   >
     <template v-slot:body-cell-avatar="props">
       <q-td :props="props">
-        <q-avatar>
+        <q-avatar color="grey-2">
           <img
             v-if="props.value"
             :src="props.value"
@@ -92,6 +92,7 @@ const columns: any = [
           flat
           :style="{
             backgroundColor: props.value,
+            border: '1px solid grey',
             width: '20px',
             height: '20px',
           }"
@@ -115,7 +116,12 @@ const columns: any = [
         <q-btn
           color="info"
           icon="las la-pencil-alt"
-          :to="{ name: 'moment-edit' }"
+          :to="{
+            name: 'moment-edit',
+            params: {
+              timelineUuid: $route.params.uuid,
+            },
+          }"
           outline
         ></q-btn>
         <q-btn color="negative" icon="las la-trash" outline></q-btn>
@@ -179,7 +185,12 @@ const columns: any = [
                     class="q-mr-sm"
                     color="info"
                     outline
-                    :to="{ name: 'moment-edit' }"
+                    :to="{
+                      name: 'moment-edit',
+                      params: {
+                        timelineUuid: $route.params.uuid,
+                      },
+                    }"
                     >{{ $t('app.components.tableMoments.edit') }}</q-btn
                   >
                   <q-btn color="negative" outline>{{

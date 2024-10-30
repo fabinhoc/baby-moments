@@ -29,7 +29,14 @@ const getTimeline = async () => {
     if (uuid) {
       const response = await service.findById(uuid);
       timeline.value = response;
-      moments.value = response.moments.data;
+      moments.value = response.moments.data.map((moment: any) => {
+        return {
+          ...moment,
+          avatar: moment.avatar
+            ? `${process.env.STORAGE_URL}${moment.avatar}`
+            : null, // Adiciona a URL
+        };
+      });
     }
   } catch (error: any) {
     console.log(error);
@@ -70,7 +77,12 @@ const getTimeline = async () => {
               color="positive"
               icon="las la-plus"
               outline
-              :to="{ name: 'moment-new' }"
+              :to="{
+                name: 'moment-new',
+                params: {
+                  timelineUuid: $route.params.uuid,
+                },
+              }"
               >{{ $t('app.pages.timeline.list.addMoment') }}</q-btn
             >
           </div>
