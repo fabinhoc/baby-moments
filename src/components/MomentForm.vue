@@ -47,7 +47,6 @@ const handleSubmit = async () => {
   try {
     const formData = new FormData();
     if (selectedImage.value) {
-      console.log('aquiiiii');
       formData.append('avatar', selectedImage.value);
     }
     formData.append('title', form.value.title as string);
@@ -116,21 +115,82 @@ const getMoment = async () => {
     notify.error(message);
   }
 };
+
+interface ImageType {
+  src: string | null;
+  type: string | null;
+}
+
+const image: Ref<ImageType> = ref({
+  src: null,
+  type: null,
+});
+
+const file: Ref<HTMLInputElement | null> = ref(null);
+
+const getMimeType = (file: any, fallback = null) => {
+  const byteArray = new Uint8Array(file).subarray(0, 4);
+  let header = '';
+  for (let i = 0; i < byteArray.length; i++) {
+    header += byteArray[i].toString(16);
+  }
+  switch (header) {
+    case '89504e47':
+      return 'image/png';
+    case '47494638':
+      return 'image/gif';
+    case 'ffd8ffe0':
+    case 'ffd8ffe1':
+    case 'ffd8ffe2':
+    case 'ffd8ffe3':
+    case 'ffd8ffe8':
+      return 'image/jpeg';
+    default:
+      return fallback;
+  }
+};
+
+const handleFileChange = (event: any) => {
+  const { files } = event.target;
+  if (files && files[0]) {
+    if (image.value.src) {
+      URL.revokeObjectURL(image.value.src);
+    }
+    const blob = URL.createObjectURL(files[0]);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      image.value = {
+        src: blob,
+        type: getMimeType(e?.target?.result, files[0].type),
+      };
+    };
+    reader.readAsArrayBuffer(files[0]);
+    openDialog.value = true;
+  }
+};
 </script>
 
 <template>
   <div class="column justify-center items-center q-pa-md">
     <UploadCropperImage
       v-model="openDialog"
+      :image="image"
       @cropped-image="setImage"
       @thumb-url="createThumb"
+    />
+    <input
+      type="file"
+      ref="file"
+      @change="handleFileChange($event)"
+      accept="image/*"
+      style="display: none"
     />
     <div style="position: relative; display: inline-block">
       <q-avatar
         size="80px"
         clickable
         class="cursor-pointer"
-        @click="openDialog = true"
+        @click="file?.click()"
         color="grey-2"
       >
         <div v-if="thumbImage">
@@ -147,7 +207,7 @@ const getMoment = async () => {
         size="xs"
         text-color="dark"
         style="position: absolute; top: 0; right: -8px"
-        @click="openDialog = true"
+        @click="file?.click()"
       />
     </div>
   </div>

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { Ref, ref } from 'vue';
+import { ref } from 'vue';
 import { CircleStencil, Cropper } from 'vue-advanced-cropper';
 import 'vue-advanced-cropper/dist/style.css';
+import 'vue-advanced-cropper/dist/theme.compact.css';
 
 defineOptions({
   name: 'UploadCropperImage',
@@ -11,54 +12,18 @@ defineOptions({
   },
 });
 
+interface ImageType {
+  src: string | null;
+  type: string | null;
+}
+
+defineProps<{
+  image: ImageType;
+}>();
+
 const emit = defineEmits(['croppedImage', 'thumbUrl']);
 
-const file: Ref<HTMLInputElement | null> = ref(null);
-const image: Ref<{ src: string | null; type: string | null }> = ref({
-  src: null,
-  type: null,
-});
 const cropper: any = ref();
-
-const handleFileChange = (event: any) => {
-  const { files } = event.target;
-  if (files && files[0]) {
-    if (image.value.src) {
-      URL.revokeObjectURL(image.value.src);
-    }
-    const blob = URL.createObjectURL(files[0]);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      image.value = {
-        src: blob,
-        type: getMimeType(e?.target?.result, files[0].type),
-      };
-    };
-    reader.readAsArrayBuffer(files[0]);
-  }
-};
-
-const getMimeType = (file: any, fallback = null) => {
-  const byteArray = new Uint8Array(file).subarray(0, 4);
-  let header = '';
-  for (let i = 0; i < byteArray.length; i++) {
-    header += byteArray[i].toString(16);
-  }
-  switch (header) {
-    case '89504e47':
-      return 'image/png';
-    case '47494638':
-      return 'image/gif';
-    case 'ffd8ffe0':
-    case 'ffd8ffe1':
-    case 'ffd8ffe2':
-    case 'ffd8ffe3':
-    case 'ffd8ffe8':
-      return 'image/jpeg';
-    default:
-      return fallback;
-  }
-};
 
 const uploadImage = () => {
   const { canvas } = cropper.value.getResult();
@@ -73,34 +38,12 @@ const uploadImage = () => {
 
 <template>
   <q-dialog full-width full-height>
-    <q-card class="q-pa-md">
-      <input
-        type="file"
-        ref="file"
-        @change="handleFileChange($event)"
-        accept="image/*"
-        style="display: none"
-      />
-      <q-card-actions class="row items-center justify-center">
-        <q-btn
-          icon="las la-sync-alt"
-          unelevated
-          color="primary"
-          @click="file?.click()"
-          >change image</q-btn
-        >
-        <q-btn
-          icon="las la-save"
-          unelevated
-          color="primary"
-          @click="uploadImage"
-          >upload image</q-btn
-        >
-        <q-space></q-space>
+    <q-card>
+      <q-card-section class="column items-end justify-end">
         <q-btn icon="las la-times" flat round dense v-close-popup />
-      </q-card-actions>
+      </q-card-section>
       <q-card-section
-        style="height: 90%"
+        style="height: 80%"
         class="column items-center justify-center"
       >
         <Cropper
@@ -114,9 +57,8 @@ const uploadImage = () => {
           }"
           :stencil-props="{
             handlers: {},
-            movable: false,
+            movable: true,
             resizable: false,
-            backgroundClass: '#eee',
           }"
           :stencil-size="{
             width: 80,
@@ -125,14 +67,33 @@ const uploadImage = () => {
           image-restriction="stencil"
         />
       </q-card-section>
+      <q-card-actions class="row justify-center items-center">
+        <q-btn
+          color="primary"
+          icon="las la-exchange-alt"
+          @click="cropper.flip(true, false)"
+        />
+        <q-btn
+          color="primary"
+          icon="las la-redo-alt"
+          @click="cropper.rotate(90)"
+        />
+        <q-btn color="primary" icon="las la-save" @click="uploadImage" />
+      </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 
 <style scoped lang="css">
 .cropper {
-  height: 250px;
-  width: 250px;
+  height: 100%;
+  width: 100%;
   background: #ddd;
+}
+.vertical-buttons {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 </style>

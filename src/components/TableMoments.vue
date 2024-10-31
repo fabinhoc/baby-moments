@@ -201,7 +201,7 @@ const remove = async (id: number) => {
                     no-caps
                     :to="{
                       name: 'album-save',
-                      params: { id: col.value.album.id },
+                      params: { id: props.row.album.id },
                     }"
                   >
                     {{
@@ -220,7 +220,7 @@ const remove = async (id: number) => {
                       name: 'moment-edit',
                       params: {
                         timelineUuid: $route.params.uuid,
-                        id: col.row.id,
+                        id: props.row.id,
                       },
                     }"
                     >{{ $t('app.components.tableMoments.edit') }}</q-btn
