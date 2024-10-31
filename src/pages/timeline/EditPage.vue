@@ -6,7 +6,7 @@ import useNotify from 'src/composables/useNotify';
 import useTimelineService from 'src/services/timeline.service';
 import { MomentType } from 'src/types/Moment.type';
 import { TimelineType } from 'src/types/Timeline.type';
-import { onMounted, Ref, ref } from 'vue';
+import { onMounted, provide, Ref, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 defineOptions({
@@ -44,6 +44,8 @@ const getTimeline = async () => {
     notify.error(message);
   }
 };
+
+provide('getTimeline', getTimeline);
 </script>
 
 <template>

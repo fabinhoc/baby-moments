@@ -63,6 +63,8 @@ export default {
         edit: 'Edit',
         remove: 'Remove',
         position: 'Position',
+        deleteConfirmation:
+          'This action will remove all photos/videos from that moment. Are you sure about that?',
       },
       formLogin: {
         email: 'Email',

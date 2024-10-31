@@ -32,7 +32,14 @@ const getTimeline = async () => {
     if (uuid) {
       const response = await service.findById(uuid);
       timeline.value = response;
-      moments.value = response.moments.data;
+      moments.value = response.moments.data.map((moment: any) => {
+        return {
+          ...moment,
+          avatar: moment.avatar
+            ? `${process.env.STORAGE_URL}${moment.avatar}`
+            : null, // Adiciona a URL
+        };
+      });
     }
   } catch (error: any) {
     console.log(error);
