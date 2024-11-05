@@ -5,6 +5,7 @@ import { MomentType } from 'src/types/Moment.type';
 import { TimelineType } from 'src/types/Timeline.type';
 import { nextTick, onBeforeUnmount, onMounted, Ref, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import PageTitle from 'src/components/PageTitle.vue';
 
 defineOptions({
   name: 'TimelinePage',
@@ -68,8 +69,13 @@ const handleScroll = async () => {
 
 <template>
   <q-page padding @scroll="handleScroll" ref="page">
+    <PageTitle
+      :title="timeline?.title as string"
+      class="text-center"
+    ></PageTitle>
+
     <div class="column items-center justify-start q-mb-xl">
-      <q-timeline :layout="'loose'" color="secondary" style="margin-top: 10px">
+      <q-timeline :layout="'loose'" color="secondary">
         <q-timeline-entry
           class="custom-avatar"
           :class="{ 'is-visible': moment.isVisible }"
@@ -80,11 +86,17 @@ const handleScroll = async () => {
           :style="dynamicBorderStyle(moment.theme)"
         >
           <template v-slot:title>
-            <div
+            <router-link
               class="text-primary poppins-semibold all-pointer-events cursor-pointer text-underline"
+              :to="{
+                name: 'view-album',
+                params: {
+                  id: moment.album.id,
+                },
+              }"
             >
               {{ moment.title }}
-            </div>
+            </router-link>
           </template>
           <template v-slot:subtitle>
             <div class="text-primary poppins-semibold">February 22</div>
@@ -142,9 +154,5 @@ const handleScroll = async () => {
 .custom-avatar,
 .q-timeline__entry {
   padding-bottom: 100px !important;
-}
-.custom-avatar,
-.q-timeline__entry--icon .q-timeline__dot:after {
-  top: 87px !important;
 }
 </style>
