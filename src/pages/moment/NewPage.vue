@@ -18,7 +18,10 @@ defineOptions({
         </PageTitle>
         <q-card-section>
           <q-btn
-            :to="{ name: 'timeline-edit' }"
+            :to="{
+              name: 'timeline-edit',
+              params: { uuid: $route.params.timelineUuid },
+            }"
             icon="las la-undo"
             flat
             rounded

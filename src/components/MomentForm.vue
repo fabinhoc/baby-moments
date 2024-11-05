@@ -1,46 +1,216 @@
 <script setup lang="ts">
 import { MomentDto } from 'src/types/dto/Moment.dto';
-import { Ref, ref } from 'vue';
+import { onMounted, Ref, ref } from 'vue';
 import { required } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
+import UploadCropperImage from 'src/components/UploadCropperImage.vue';
+import useMomentService from 'src/services/moment.service';
+import { useI18n } from 'vue-i18n';
+import useNotify from 'src/composables/useNotify';
+import { useRoute, useRouter } from 'vue-router';
 
 defineOptions({
   name: 'momentForm',
 });
 
+onMounted(() => {
+  getMoment();
+});
+
+const openDialog: Ref<boolean> = ref(false);
 const formMoment = ref();
+const service = useMomentService();
+const { t } = useI18n();
+const notify = useNotify();
+const selectedImage: Ref<File | Blob | null> = ref(null);
+const thumbImage: Ref<string | null> = ref(null);
+const route = useRoute();
+const router = useRouter();
+const id = route.params.id as string;
 const form: Ref<MomentDto> = ref({
   title: null,
   description: null,
-  avatar: null,
-  color: '#eeeeee',
+  theme: '#eeeeee',
   position: null,
+  avatar: null,
 });
 const rules = {
   title: { required },
   description: {},
-  avatar: {},
-  color: {},
+  theme: { required },
   position: { required },
 };
 
 const v$ = useVuelidate(rules, form);
 
-const handleSubmit = () => {};
+const handleSubmit = async () => {
+  try {
+    const formData = new FormData();
+    if (selectedImage.value) {
+      formData.append('avatar', selectedImage.value);
+    }
+    formData.append('title', form.value.title as string);
+    formData.append('description', form.value.description as string);
+    formData.append('position', form.value.position?.toString() as string);
+    formData.append('timeline_id', route.params.timelineUuid.toString());
+    formData.append('theme', form.value.theme as string);
+
+    if (id) {
+      await service.put(parseInt(id), formData);
+    } else {
+      await service.post(formData);
+    }
+
+    notify.success(t('success'));
+    clear();
+    router.push({
+      name: 'timeline-edit',
+      params: { uuid: route.params.timelineUuid },
+    });
+  } catch (error: any) {
+    console.log(error);
+    const message = error?.response?.data?.message ?? error;
+    notify.error(message);
+  }
+};
 
 const clear = () => {
   form.value = {
     title: null,
     description: null,
-    avatar: null,
-    color: '#eeeeee',
+    theme: '#eeeeee',
     position: null,
+    avatar: null,
   };
+  thumbImage.value = null;
+  selectedImage.value = null;
   formMoment.value.reset();
+};
+
+const setImage = (fileImage: Blob) => {
+  selectedImage.value = fileImage;
+  openDialog.value = false;
+};
+
+const createThumb = (url: string) => {
+  thumbImage.value = url;
+};
+
+const getMoment = async () => {
+  try {
+    if (id) {
+      const data = await service.findById(id);
+      form.value = data;
+      form.value.avatar = data.avatar
+        ? process.env.STORAGE_URL + data.avatar
+        : null;
+
+      if (form.value.avatar) {
+        thumbImage.value = form.value.avatar;
+      }
+    }
+  } catch (error: any) {
+    console.log(error);
+    const message = error?.response?.data?.message ?? error;
+    notify.error(message);
+  }
+};
+
+interface ImageType {
+  src: string | null;
+  type: string | null;
+}
+
+const image: Ref<ImageType> = ref({
+  src: null,
+  type: null,
+});
+
+const file: Ref<HTMLInputElement | null> = ref(null);
+
+const getMimeType = (file: any, fallback = null) => {
+  const byteArray = new Uint8Array(file).subarray(0, 4);
+  let header = '';
+  for (let i = 0; i < byteArray.length; i++) {
+    header += byteArray[i].toString(16);
+  }
+  switch (header) {
+    case '89504e47':
+      return 'image/png';
+    case '47494638':
+      return 'image/gif';
+    case 'ffd8ffe0':
+    case 'ffd8ffe1':
+    case 'ffd8ffe2':
+    case 'ffd8ffe3':
+    case 'ffd8ffe8':
+      return 'image/jpeg';
+    default:
+      return fallback;
+  }
+};
+
+const handleFileChange = (event: any) => {
+  const { files } = event.target;
+  if (files && files[0]) {
+    if (image.value.src) {
+      URL.revokeObjectURL(image.value.src);
+    }
+    const blob = URL.createObjectURL(files[0]);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      image.value = {
+        src: blob,
+        type: getMimeType(e?.target?.result, files[0].type),
+      };
+    };
+    reader.readAsArrayBuffer(files[0]);
+    openDialog.value = true;
+  }
 };
 </script>
 
 <template>
+  <div class="column justify-center items-center q-pa-md">
+    <UploadCropperImage
+      v-model="openDialog"
+      :image="image"
+      @cropped-image="setImage"
+      @thumb-url="createThumb"
+    />
+    <input
+      type="file"
+      ref="file"
+      @change="handleFileChange($event)"
+      accept="image/*"
+      style="display: none"
+    />
+    <div style="position: relative; display: inline-block">
+      <q-avatar
+        size="80px"
+        clickable
+        class="cursor-pointer"
+        @click="file?.click()"
+        color="grey-2"
+      >
+        <div v-if="thumbImage">
+          <img :src="thumbImage" />
+        </div>
+        <div v-else>
+          <q-icon name="las la-image"></q-icon>
+        </div>
+      </q-avatar>
+      <q-btn
+        round
+        icon="las la-pencil-alt"
+        color="grey-2"
+        size="xs"
+        text-color="dark"
+        style="position: absolute; top: 0; right: -8px"
+        @click="file?.click()"
+      />
+    </div>
+  </div>
   <q-form ref="formMoment" @submit.prevent="handleSubmit">
     <div class="row q-col-gutter-md">
       <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
@@ -72,10 +242,12 @@ const clear = () => {
       <div class="col col-sm-12 col-md-12 col-lg-12 col-xs-12">
         <q-input
           outlined
-          v-model="v$.color.$model"
-          :rules="['anyColor']"
+          v-model="v$.theme.$model"
           class="my-input"
           :label="$t('app.components.momentForm.theme')"
+          :rules="[
+            () => !v$.theme.required.$invalid || $t('validations.required'),
+          ]"
         >
           <template v-slot:append>
             <q-icon name="colorize" class="cursor-pointer">
@@ -84,13 +256,13 @@ const clear = () => {
                 transition-show="scale"
                 transition-hide="scale"
               >
-                <q-color v-model="v$.color.$model" />
+                <q-color v-model="v$.theme.$model" />
               </q-popup-proxy>
             </q-icon>
           </template>
         </q-input>
-        <q-badge :style="{ backgroundColor: form.color }" class="q-mb-sm">
-          <span class="text-dark">{{ form.color }}</span>
+        <q-badge :style="{ backgroundColor: form.theme }" class="q-mb-sm">
+          <span class="text-dark">{{ form.theme }}</span>
         </q-badge>
       </div>
       <div class="col col-sm-12 col-md-12 col-lg-12 col-xs-12">
@@ -103,17 +275,6 @@ const clear = () => {
           :label="$t('app.components.momentForm.description')"
         >
         </q-input>
-      </div>
-      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
-        <q-file
-          v-model="v$.avatar.$model"
-          counter
-          autogrow
-          outlined
-          use-chips
-          :label="$t('app.components.momentForm.avatar')"
-        >
-        </q-file>
       </div>
       <div class="col-sm-12 col-md-12 col-lg-12 q-gutter-sm">
         <q-btn type="submit" color="primary" outline :disable="v$.$invalid">{{

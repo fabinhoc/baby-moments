@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import useDialog from 'src/composables/useDialog';
+import useMomentService from 'src/services/moment.service';
 import { MomentType } from 'src/types/Moment.type';
+import { inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 defineOptions({
@@ -14,6 +17,9 @@ defineProps({
 });
 
 const { t } = useI18n();
+const dialogConfirmation = useDialog();
+const service = useMomentService();
+const getTimeline: any = inject('getTimeline');
 
 const columns: any = [
   {
@@ -64,6 +70,22 @@ const columns: any = [
     sortable: false,
   },
 ];
+
+const remove = async (id: number) => {
+  try {
+    dialogConfirmation
+      .confirm(
+        t('confirm.title'),
+        t('app.components.tableMoments.deleteConfirmation')
+      )
+      .onOk(async () => {
+        await service.remove(id);
+        getTimeline();
+      });
+  } catch (error: any) {
+    console.log(error);
+  }
+};
 </script>
 
 <template>
@@ -73,14 +95,17 @@ const columns: any = [
     :columns="columns"
     :rows="data"
     row-key="title"
+    :pagination="{
+      rowsPerPage: 12,
+    }"
   >
     <template v-slot:body-cell-avatar="props">
       <q-td :props="props">
-        <q-avatar>
+        <q-avatar color="grey-2">
           <img
             v-if="props.value"
             :src="props.value"
-            :style="{ border: '4px solid' + props.row.color }"
+            :style="{ border: '4px solid' + props.row.theme }"
           />
           <q-icon v-else name="las la-camera"></q-icon>
         </q-avatar>
@@ -92,6 +117,7 @@ const columns: any = [
           flat
           :style="{
             backgroundColor: props.value,
+            border: '1px solid grey',
             width: '20px',
             height: '20px',
           }"
@@ -115,10 +141,21 @@ const columns: any = [
         <q-btn
           color="info"
           icon="las la-pencil-alt"
-          :to="{ name: 'moment-edit' }"
+          :to="{
+            name: 'moment-edit',
+            params: {
+              timelineUuid: $route.params.uuid,
+              id: props.row.id,
+            },
+          }"
           outline
         ></q-btn>
-        <q-btn color="negative" icon="las la-trash" outline></q-btn>
+        <q-btn
+          color="negative"
+          icon="las la-trash"
+          outline
+          @click="remove(props.row.id)"
+        ></q-btn>
       </q-td>
     </template>
     <template v-slot:item="props">
@@ -164,7 +201,7 @@ const columns: any = [
                     no-caps
                     :to="{
                       name: 'album-save',
-                      params: { id: col.value.album.id },
+                      params: { id: props.row.album.id },
                     }"
                   >
                     {{
@@ -179,10 +216,16 @@ const columns: any = [
                     class="q-mr-sm"
                     color="info"
                     outline
-                    :to="{ name: 'moment-edit' }"
+                    :to="{
+                      name: 'moment-edit',
+                      params: {
+                        timelineUuid: $route.params.uuid,
+                        id: props.row.id,
+                      },
+                    }"
                     >{{ $t('app.components.tableMoments.edit') }}</q-btn
                   >
-                  <q-btn color="negative" outline>{{
+                  <q-btn color="negative" outline @click="remove(col.row.id)">{{
                     $t('app.components.tableMoments.remove')
                   }}</q-btn>
                 </q-item-label>

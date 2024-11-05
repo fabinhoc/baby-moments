@@ -6,6 +6,7 @@ import { AlbumType } from 'src/types/Album.type';
 import { AlbumFileFileTypeEnum } from 'src/types/enums/AlbumFileFileType.enum';
 import { onMounted, ref, Ref } from 'vue';
 import { useRoute } from 'vue-router';
+import PageTitle from 'src/components/PageTitle.vue';
 
 defineOptions({
   name: 'ViewPage',
@@ -45,57 +46,77 @@ const getAlbum = async () => {
 </script>
 
 <template>
-  <q-card>
-    <q-card-section>
-      <div class="column q-gutter-y-md">
-        <div class="row q-col-gutter-md q-mt-sm">
-          <div
-            class="col-lg-2 col-md-2 col-sm-12 col-xs-12"
-            v-for="(albumFile, index) in albumFiles"
-            :key="index"
-          >
-            <q-card
-              :style="{
-                backgroundColor: theme,
-                border: '10px solid' + theme,
-              }"
-              dark
+  <q-page padding>
+    <PageTitle
+      :title="album?.moment.title as string"
+      class="text-center"
+    ></PageTitle>
+
+    <q-card class="bg-transparent" flat>
+      <q-card-section>
+        <q-btn
+          :to="{
+            name: 'view-timeline',
+            params: { uuid: album?.moment.timeline.uuid },
+          }"
+          icon="las la-undo"
+          flat
+          rounded
+          color="primary"
+          >{{ $t('app.pages.album.save.goBack') }}</q-btn
+        >
+      </q-card-section>
+      <q-card-section>
+        <div class="column q-gutter-y-md">
+          <div class="row q-col-gutter-md q-mt-sm">
+            <div
+              class="col-lg-2 col-md-2 col-sm-12 col-xs-12"
+              v-for="(albumFile, index) in albumFiles"
+              :key="index"
             >
-              <video
-                class="full-width"
-                v-if="albumFile.file_type === AlbumFileFileTypeEnum.VIDEO"
-                :src="albumFile.file_path"
-                :autoplay="false"
-                style="height: 200px"
-                controls
-              />
-              <q-img
-                v-else
-                :src="`${albumFile.file_path}`"
-                style="height: 200px"
-              />
-              <q-btn
-                flat
-                round
-                :style="{ backgroundColor: theme }"
-                :icon="
-                  albumFile.file_type === AlbumFileFileTypeEnum.VIDEO
-                    ? 'las la-video'
-                    : 'las la-image'
-                "
-                class="absolute"
-                style="top: 15px; right: -5px; transform: translateY(-50%)"
-              />
-              <q-card-section
-                class="q-pa-none q-pt-sm"
-                style="min-height: 85px"
+              <q-card
+                :style="{
+                  backgroundColor: theme,
+                  border: '10px solid' + theme,
+                }"
+                dark
               >
-                {{ albumFile.title ? albumFile.title : '&nbsp;' }}
-              </q-card-section>
-            </q-card>
+                <video
+                  class="full-width"
+                  v-if="albumFile.file_type === AlbumFileFileTypeEnum.VIDEO"
+                  :src="albumFile.file_path"
+                  :autoplay="false"
+                  style="height: 200px"
+                  controls
+                />
+                <q-img
+                  v-else
+                  :src="`${albumFile.file_path}`"
+                  style="height: 200px"
+                />
+                <q-btn
+                  flat
+                  round
+                  :style="{ backgroundColor: theme }"
+                  :icon="
+                    albumFile.file_type === AlbumFileFileTypeEnum.VIDEO
+                      ? 'las la-video'
+                      : 'las la-image'
+                  "
+                  class="absolute"
+                  style="top: 15px; right: -5px; transform: translateY(-50%)"
+                />
+                <q-card-section
+                  class="q-pa-none q-pt-sm"
+                  style="min-height: 85px"
+                >
+                  {{ albumFile.title ? albumFile.title : '&nbsp;' }}
+                </q-card-section>
+              </q-card>
+            </div>
           </div>
         </div>
-      </div>
-    </q-card-section>
-  </q-card>
+      </q-card-section>
+    </q-card>
+  </q-page>
 </template>

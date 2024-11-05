@@ -108,7 +108,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
-        path: 'edit',
+        path: 'edit/:timelineUuid/:id',
         name: 'moment-edit',
         component: () => import('pages/moment/EditPage.vue'),
         meta: {
@@ -116,7 +116,7 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
-        path: 'new',
+        path: 'new/:timelineUuid',
         name: 'moment-new',
         component: () => import('pages/moment/NewPage.vue'),
         meta: {
