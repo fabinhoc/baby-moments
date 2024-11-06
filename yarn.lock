@@ -1290,6 +1290,11 @@ elementtree@0.1.7:
   dependencies:
     sax "1.1.4"
 
+emoji-picker-element@^1.22.8:
+  version "1.22.8"
+  resolved "https://registry.yarnpkg.com/emoji-picker-element/-/emoji-picker-element-1.22.8.tgz#3fe824afd1108b79b4babec79a58160cf497f763"
+  integrity sha512-EFgRjrlIcdA1ilyMH/f9KjB0Pi/vynrojNgMDZfU1Jv2YLrhdLJWx6xCehizPyxm4/NUuB8DfFvIT4v+1njjPQ==
+
 emoji-regex@^8.0.0:
   version "8.0.0"
   resolved "https://registry.npmjs.org/emoji-regex/-/emoji-regex-8.0.0.tgz"

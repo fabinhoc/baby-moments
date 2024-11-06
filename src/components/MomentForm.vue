@@ -8,6 +8,7 @@ import useMomentService from 'src/services/moment.service';
 import { useI18n } from 'vue-i18n';
 import useNotify from 'src/composables/useNotify';
 import { useRoute, useRouter } from 'vue-router';
+import 'emoji-picker-element';
 
 defineOptions({
   name: 'momentForm',
@@ -27,6 +28,7 @@ const thumbImage: Ref<string | null> = ref(null);
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id as string;
+const activeField: Ref<keyof MomentDto | null> = ref(null);
 const form: Ref<MomentDto> = ref({
   title: null,
   description: null,
@@ -168,6 +170,19 @@ const handleFileChange = (event: any) => {
     openDialog.value = true;
   }
 };
+
+const setActiveField = (field: keyof MomentDto) => {
+  activeField.value = field;
+};
+
+const addEmoji = (event: any) => {
+  if (activeField.value) {
+    const fieldValue = form.value[activeField.value];
+    form.value[activeField.value] = fieldValue
+      ? fieldValue + event.detail.unicode
+      : event.detail.unicode;
+  }
+};
 </script>
 
 <template>
@@ -222,7 +237,18 @@ const handleFileChange = (event: any) => {
           :rules="[
             () => !v$.title.required.$invalid || $t('validations.required'),
           ]"
+          @focus="setActiveField('title')"
         >
+          <template v-slot:append>
+            <q-btn icon="las la-smile" round flat>
+              <q-popup-proxy :touch-position="true">
+                <emoji-picker
+                  @emoji-click="addEmoji"
+                  class="light"
+                ></emoji-picker>
+              </q-popup-proxy>
+            </q-btn>
+          </template>
         </q-input>
       </div>
       <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
@@ -273,7 +299,18 @@ const handleFileChange = (event: any) => {
           autogrow
           outlined
           :label="$t('app.components.momentForm.description')"
+          @focus="setActiveField('description')"
         >
+          <template v-slot:append>
+            <q-btn icon="las la-smile" round flat>
+              <q-popup-proxy :touch-position="true">
+                <emoji-picker
+                  @emoji-click="addEmoji"
+                  class="light"
+                ></emoji-picker>
+              </q-popup-proxy>
+            </q-btn>
+          </template>
         </q-input>
       </div>
       <div class="col-sm-12 col-md-12 col-lg-12 q-gutter-sm">

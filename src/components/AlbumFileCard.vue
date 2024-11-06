@@ -2,6 +2,7 @@
 import { AlbumFileType } from 'src/types/AbumFile.type';
 import { AlbumFileFileTypeEnum } from 'src/types/enums/AlbumFileFileType.enum';
 import { inject, ref, Ref } from 'vue';
+import 'emoji-picker-element';
 
 defineOptions({
   name: 'AlbumFileCard',
@@ -11,6 +12,9 @@ defineProps<{
   albumFile: AlbumFileType;
   theme: string;
 }>();
+
+const title: Ref<string> = ref('');
+const isEditing: Ref<boolean> = ref(false);
 
 const removeItem: any = inject('removeAlbumFile');
 const updateItem: any = inject('updateAlbumFile');
@@ -26,8 +30,12 @@ const edit = (id: number, itemTitle: string) => {
   isEditing.value = true;
 };
 
-const title: Ref<string> = ref('');
-const isEditing: Ref<boolean> = ref(false);
+const addEmoji = (event: any) => {
+  const fieldValue = title.value;
+  title.value = fieldValue
+    ? fieldValue + event.detail.unicode
+    : event.detail.unicode;
+};
 </script>
 
 <template>
@@ -82,6 +90,16 @@ const isEditing: Ref<boolean> = ref(false);
         >
           <template v-slot:prepend>
             <q-icon name="las la-pencil-alt" size="xs" />
+          </template>
+          <template v-slot:append>
+            <q-btn icon="las la-smile" round flat>
+              <q-popup-proxy :touch-position="true">
+                <emoji-picker
+                  @emoji-click="addEmoji"
+                  class="light"
+                ></emoji-picker>
+              </q-popup-proxy>
+            </q-btn>
           </template>
         </q-input>
       </div>

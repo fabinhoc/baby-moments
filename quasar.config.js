@@ -45,6 +45,14 @@ module.exports = configure(function (ctx) {
         node: 'node20',
       },
 
+      viteVuePluginOptions: {
+        template: {
+          compilerOptions: {
+            isCustomElement: (tag) => tag === 'emoji-picker',
+          },
+        },
+      },
+
       vueRouterMode: 'history', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
