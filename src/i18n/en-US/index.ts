@@ -66,6 +66,7 @@ export default {
         position: 'Position',
         deleteConfirmation:
           'This action will remove all photos/videos from that moment. Are you sure about that?',
+        momentDate: 'Date moment',
       },
       formLogin: {
         email: 'Email',

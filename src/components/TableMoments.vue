@@ -16,7 +16,7 @@ defineProps({
   },
 });
 
-const { t } = useI18n();
+const { t, d } = useI18n();
 const dialogConfirmation = useDialog();
 const service = useMomentService();
 const getTimeline: any = inject('getTimeline');
@@ -36,6 +36,20 @@ const columns: any = [
     label: t('app.components.tableMoments.position'),
     align: 'center',
     field: (row: MomentType) => row.position,
+    sortable: false,
+  },
+  {
+    name: 'moment_date',
+    required: true,
+    label: t('app.components.tableMoments.momentDate'),
+    align: 'center',
+    field: (row: MomentType) => {
+      if (row.moment_date) {
+        const [year, month, day] = row.moment_date.split('-').map(Number);
+        return d(new Date(year, month - 1, day), 'short');
+      }
+      return '';
+    },
     sortable: false,
   },
   {
