@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import useAlbumFileService from 'src/services/abumFile.service';
 import { computed, Ref, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 enum UploadFileEnum {
   PENDING = 'PENDING',
@@ -28,6 +29,7 @@ const service = useAlbumFileService();
 const fileInput: Ref<HTMLInputElement | null> = ref(null);
 const files: Ref<UploadFileType[]> = ref([]);
 const CHUNK_SIZE = 8 * 1024 * 1024;
+const route = useRoute();
 const totalSize = computed(() => {
   return files.value.reduce((total, fileObj) => {
     return total + fileObj.file.size;
@@ -145,7 +147,7 @@ const uploadChunk = async (
   let chunk = file.slice(start, start + CHUNK_SIZE);
 
   const formData = new FormData();
-  const albumId = 1;
+  const albumId = route.params.id;
   const blob = new Blob([chunk], { type: file.type });
   formData.append('file', blob, file.name);
   formData.append('chunk_index', chunkNumber.toString());
