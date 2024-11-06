@@ -2,6 +2,7 @@
 import useAlbumFileService from 'src/services/abumFile.service';
 import { computed, Ref, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import 'emoji-picker-element';
 
 enum UploadFileEnum {
   PENDING = 'PENDING',
@@ -30,6 +31,7 @@ const fileInput: Ref<HTMLInputElement | null> = ref(null);
 const files: Ref<UploadFileType[]> = ref([]);
 const CHUNK_SIZE = 8 * 1024 * 1024;
 const route = useRoute();
+const activeField: Ref<number | null> = ref(null);
 const totalSize = computed(() => {
   return files.value.reduce((total, fileObj) => {
     return total + fileObj.file.size;
@@ -177,6 +179,19 @@ const defineProgressColor = (status: UploadFileEnum): string => {
 
   return colors[status] || 'default';
 };
+
+const setActiveFieldIndex = (fieldIndex: number) => {
+  activeField.value = fieldIndex;
+};
+
+const addEmoji = (event: any) => {
+  if (activeField.value !== null) {
+    const fieldValue = files.value[activeField.value].title;
+    files.value[activeField.value].title = fieldValue
+      ? fieldValue + event.detail.unicode
+      : event.detail.unicode;
+  }
+};
 </script>
 
 <template>
@@ -285,9 +300,20 @@ const defineProgressColor = (status: UploadFileEnum): string => {
                     "
                     lazy-rules
                     input-class="text-weight-bold text-subtitle"
+                    @focus="setActiveFieldIndex(index)"
                   >
                     <template v-slot:prepend>
                       <q-icon name="las la-pencil-alt" size="xs" />
+                    </template>
+                    <template v-slot:append>
+                      <q-btn icon="las la-smile" round flat>
+                        <q-popup-proxy :touch-position="true">
+                          <emoji-picker
+                            @emoji-click="addEmoji"
+                            class="light"
+                          ></emoji-picker>
+                        </q-popup-proxy>
+                      </q-btn>
                     </template>
                   </q-input>
                 </q-item-label>
