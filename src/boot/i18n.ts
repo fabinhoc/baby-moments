@@ -41,6 +41,10 @@ export default boot(({ app }) => {
           minute: '2-digit',
           second: '2-digit',
         },
+        extended: {
+          day: '2-digit',
+          month: 'long',
+        },
       } as const,
       'pt-BR': {
         short: {
@@ -55,6 +59,10 @@ export default boot(({ app }) => {
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
+        },
+        extended: {
+          day: '2-digit',
+          month: 'long',
         },
       } as const,
     },
