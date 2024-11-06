@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { MomentDto } from 'src/types/dto/Moment.dto';
-import { onMounted, Ref, ref } from 'vue';
+import { computed, ComputedRef, onMounted, Ref, ref } from 'vue';
 import { required } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
 import UploadCropperImage from 'src/components/UploadCropperImage.vue';
@@ -9,6 +9,7 @@ import { useI18n } from 'vue-i18n';
 import useNotify from 'src/composables/useNotify';
 import { useRoute, useRouter } from 'vue-router';
 import 'emoji-picker-element';
+import { date } from 'quasar';
 
 defineOptions({
   name: 'momentForm',
@@ -21,7 +22,7 @@ onMounted(() => {
 const openDialog: Ref<boolean> = ref(false);
 const formMoment = ref();
 const service = useMomentService();
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const notify = useNotify();
 const selectedImage: Ref<File | Blob | null> = ref(null);
 const thumbImage: Ref<string | null> = ref(null);
@@ -35,15 +36,21 @@ const form: Ref<MomentDto> = ref({
   theme: '#eeeeee',
   position: null,
   avatar: null,
+  moment_date: null,
 });
 const rules = {
   title: { required },
   description: {},
   theme: { required },
   position: { required },
+  moment_date: {},
 };
 
 const v$ = useVuelidate(rules, form);
+
+const dateMask: ComputedRef<string> = computed(() => {
+  return locale.value === 'en-US' ? 'MM/DD/YYYY' : 'DD/MM/YYYY';
+});
 
 const handleSubmit = async () => {
   try {
@@ -56,6 +63,11 @@ const handleSubmit = async () => {
     formData.append('position', form.value.position?.toString() as string);
     formData.append('timeline_id', route.params.timelineUuid.toString());
     formData.append('theme', form.value.theme as string);
+    if (form.value.moment_date) {
+      const parsedDate = parseAndFormatDate(form.value.moment_date);
+      console.log(parsedDate);
+      formData.append('moment_date', parsedDate as string);
+    }
 
     if (id) {
       await service.put(parseInt(id), formData);
@@ -76,14 +88,35 @@ const handleSubmit = async () => {
   }
 };
 
+const parseAndFormatDate = (inputDate: string) => {
+  let parsedDate;
+
+  if (locale.value === 'pt-BR') {
+    // Formato esperado: dd/mm/yyyy
+    const [day, month, year] = inputDate.split('/');
+    parsedDate = `${year}-${month}-${day}`;
+  } else if (locale.value === 'en-US') {
+    // Formato esperado: mm/dd/yyyy
+    const [month, day, year] = inputDate.split('/');
+    parsedDate = `${year}-${month}-${day}`;
+  }
+
+  return parsedDate;
+};
+
 const clear = () => {
-  form.value = {
-    title: null,
-    description: null,
-    theme: '#eeeeee',
-    position: null,
-    avatar: null,
-  };
+  if (id) {
+    getMoment();
+  } else {
+    form.value = {
+      title: null,
+      description: null,
+      theme: '#eeeeee',
+      position: null,
+      avatar: null,
+      moment_date: null,
+    };
+  }
   thumbImage.value = null;
   selectedImage.value = null;
   formMoment.value.reset();
@@ -109,6 +142,13 @@ const getMoment = async () => {
 
       if (form.value.avatar) {
         thumbImage.value = form.value.avatar;
+      }
+      if (form.value.moment_date) {
+        const [year, month, day] = form.value.moment_date
+          .split('-')
+          .map(Number);
+        const dateParsed = new Date(year, month - 1, day);
+        form.value.moment_date = date.formatDate(dateParsed, dateMask.value);
       }
     }
   } catch (error: any) {
@@ -248,6 +288,31 @@ const addEmoji = (event: any) => {
                 ></emoji-picker>
               </q-popup-proxy>
             </q-btn>
+          </template>
+        </q-input>
+      </div>
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+        <q-input
+          v-model="v$.moment_date.$model"
+          :label="$t('app.components.momentForm.momentDate')"
+          lazy-rules
+          outlined
+          mask="##/##/####"
+        >
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy
+                cover
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-date v-model="v$.moment_date.$model" :mask="dateMask">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
           </template>
         </q-input>
       </div>

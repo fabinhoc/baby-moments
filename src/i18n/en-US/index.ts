@@ -49,6 +49,7 @@ export default {
         postion: 'Position',
         positionHint:
           'Add order of position in which the moment will be displayed on the timeline. Eg: 1,2,3,4...',
+        momentDate: 'Date moment',
       },
       tableMoments: {
         title: 'Title',

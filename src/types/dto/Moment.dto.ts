@@ -4,4 +4,5 @@ export interface MomentDto {
   theme: string | null;
   position: number | null;
   avatar?: string | null;
+  moment_date: string | null;
 }

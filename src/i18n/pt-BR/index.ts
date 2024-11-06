@@ -46,6 +46,7 @@ export default {
         position: 'Ordem',
         positionHint:
           'Adicione ordem de posição em que o momento será visualiado na linha do tempo. Ex: 1,2,3,4...',
+        momentDate: 'Data do momento',
       },
       tableMoments: {
         title: 'Título',
