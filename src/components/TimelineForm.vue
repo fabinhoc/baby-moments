@@ -7,6 +7,7 @@ import useTimelineService from 'src/services/timeline.service';
 import useNotify from 'src/composables/useNotify';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+import 'emoji-picker-element';
 
 defineOptions({
   name: 'TimelineForm',
@@ -19,6 +20,7 @@ const timelineForm = ref();
 const router = useRouter();
 const route = useRoute();
 const uuid = route.params.uuid as string;
+const activeField: Ref<keyof TimelineDto | null> = ref(null);
 const form: Ref<TimelineDto> = ref({
   title: null,
   description: null,
@@ -75,6 +77,19 @@ const getTimeline = async () => {
     notify.error(message);
   }
 };
+
+const setActiveField = (field: keyof TimelineDto) => {
+  activeField.value = field;
+};
+
+const addEmoji = (event: any) => {
+  if (activeField.value) {
+    const fieldValue = form.value[activeField.value];
+    form.value[activeField.value] = fieldValue
+      ? fieldValue + event.detail.unicode
+      : event.detail.unicode;
+  }
+};
 </script>
 
 <template>
@@ -89,7 +104,18 @@ const getTimeline = async () => {
           :rules="[
             () => !v$.title.required.$invalid || $t('validations.required'),
           ]"
+          @focus="setActiveField('title')"
         >
+          <template v-slot:append>
+            <q-btn icon="las la-smile" round flat>
+              <q-popup-proxy :touch-position="true">
+                <emoji-picker
+                  @emoji-click="addEmoji"
+                  class="light"
+                ></emoji-picker>
+              </q-popup-proxy>
+            </q-btn>
+          </template>
         </q-input>
       </div>
       <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
@@ -100,7 +126,18 @@ const getTimeline = async () => {
           autogrow
           outlined
           :label="$t('app.components.timelineForm.description')"
+          @focus="setActiveField('description')"
         >
+          <template v-slot:append>
+            <q-btn icon="las la-smile" round flat>
+              <q-popup-proxy :touch-position="true">
+                <emoji-picker
+                  @emoji-click="addEmoji"
+                  class="light"
+                ></emoji-picker>
+              </q-popup-proxy>
+            </q-btn>
+          </template>
         </q-input>
       </div>
       <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 q-gutter-sm">
