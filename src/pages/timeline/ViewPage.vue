@@ -93,7 +93,7 @@ const handleScroll = async () => {
           :class="{ 'is-visible': moment.isVisible }"
           v-for="(moment, index) in moments"
           :key="index"
-          :avatar="moment.avatar ?? ''"
+          :avatar="moment.avatar || undefined"
           :side="index % 2 === 0 ? 'left' : 'right'"
           :style="dynamicBorderStyle(moment.theme)"
         >

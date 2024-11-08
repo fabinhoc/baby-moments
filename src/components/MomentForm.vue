@@ -55,9 +55,8 @@ const dateMask: ComputedRef<string> = computed(() => {
 const handleSubmit = async () => {
   try {
     const formData = new FormData();
-    if (selectedImage.value) {
-      formData.append('avatar', selectedImage.value);
-    }
+    const avatar = selectedImage.value ?? '';
+    formData.append('avatar', avatar);
     formData.append('title', form.value.title as string);
     formData.append('description', form.value.description as string);
     formData.append('position', form.value.position?.toString() as string);
