@@ -7,6 +7,7 @@ import { ResetPasswordDto } from 'src/types/dto/ResetPassword.dto';
 import { ForgotPasswordDto } from 'src/types/dto/ForgotPassword.dto';
 import { UserDto } from 'src/types/dto/User.dto';
 import { UpdatePasswordDto } from 'src/types/dto/UpdatedPassword.dto';
+import { RegisterDto } from 'src/types/dto/Register.dto';
 // import { useRouter } from 'vue-router';
 
 export default function useAuthService() {
@@ -25,18 +26,16 @@ export default function useAuthService() {
     }
   };
 
-  // const register = async (payload: RegisterDto) => {
-  //   try {
-  //     const { post } = useApi('auth/register');
-  //     const { user, access_token, tenant } = await post(payload);
-  //     user.token = access_token;
-  //     user.tenant = tenant;
-  //     const { authenticate } = useAuthStore();
-  //     authenticate(user);
-  //   } catch (error: unknown) {
-  //     throw error;
-  //   }
-  // };
+  const register = async (payload: RegisterDto) => {
+    try {
+      const { post } = useApi('/register');
+      const { data } = await post(payload);
+      const { authenticate } = useAuthStore();
+      authenticate(data.user, data.token);
+    } catch (error: unknown) {
+      throw error;
+    }
+  };
 
   const resendVerification = () => {
     try {
@@ -134,5 +133,6 @@ export default function useAuthService() {
     getUser,
     updatePassword,
     remove,
+    register,
   };
 }

@@ -125,6 +125,9 @@ const handleScroll = async () => {
 </template>
 
 <style type="css" lang="css">
+.q-timeline__entry--icon .q-timeline__dot:after {
+  top: 87px !important;
+}
 .custom-avatar {
   min-height: 100px;
   opacity: 0;

@@ -108,6 +108,13 @@ export default {
         name: 'Name',
         status: 'Status',
       },
+      formRegister: {
+        name: 'Name',
+        email: 'Email',
+        password: 'Password',
+        passwordConfirmation: 'Confirm password',
+        register: 'Create account',
+      },
     },
     pages: {
       timeline: {
@@ -212,6 +219,9 @@ export default {
           btnDelete: 'I AM AWARE, Delete my account',
           deleteConfirmation:
             'By validating this action all your photos/videos will be permanently deleted.',
+        },
+        register: {
+          hasAnAccount: 'I already have an account',
         },
       },
     },

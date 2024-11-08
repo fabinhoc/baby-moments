@@ -105,6 +105,13 @@ export default {
         name: 'Nome',
         status: 'Status',
       },
+      formRegister: {
+        name: 'Nome',
+        email: 'E-mail',
+        password: 'Senha',
+        passwordConfirmation: 'Confirmar senha',
+        register: 'Criar conta',
+      },
     },
     pages: {
       timeline: {
@@ -213,6 +220,9 @@ export default {
           deleteConfirmation:
             'Ao validar essa ação todos as suas fotos/videos serão excluídos permanentemente.',
         },
+      },
+      register: {
+        hasAnAccount: 'Já tenho uma conta',
       },
     },
   },
