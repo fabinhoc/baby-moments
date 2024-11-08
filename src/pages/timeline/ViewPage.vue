@@ -6,6 +6,7 @@ import { TimelineType } from 'src/types/Timeline.type';
 import { nextTick, onBeforeUnmount, onMounted, Ref, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import PageTitle from 'src/components/PageTitle.vue';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({
   name: 'TimelinePage',
@@ -27,6 +28,7 @@ const uuid = route.params.uuid as string;
 const timeline: Ref<TimelineType | null> = ref(null);
 const moments: Ref<MomentType[] | null> = ref(null);
 const notify = useNotify();
+const { d } = useI18n();
 
 const getTimeline = async () => {
   try {
@@ -34,11 +36,18 @@ const getTimeline = async () => {
       const response = await service.findById(uuid);
       timeline.value = response;
       moments.value = response.moments.data.map((moment: any) => {
+        let formattedDate = '';
+        if (moment.moment_date) {
+          const [year, month, day] = moment.moment_date.split('-').map(Number);
+          const dateParsed = new Date(year, month - 1, day);
+          formattedDate = d(new Date(dateParsed), 'extended');
+        }
         return {
           ...moment,
           avatar: moment.avatar
             ? `${process.env.STORAGE_URL}${moment.avatar}`
             : null, // Adiciona a URL
+          moment_date: formattedDate,
         };
       });
     }
@@ -73,6 +82,9 @@ const handleScroll = async () => {
       :title="timeline?.title as string"
       class="text-center"
     ></PageTitle>
+    <h1 class="text-body1 text-center text-secondary">
+      {{ timeline?.description }}
+    </h1>
 
     <div class="column items-center justify-start q-mb-xl">
       <q-timeline :layout="'loose'" color="secondary">
@@ -99,7 +111,9 @@ const handleScroll = async () => {
             </router-link>
           </template>
           <template v-slot:subtitle>
-            <div class="text-primary poppins-semibold">February 22</div>
+            <div class="text-primary poppins-semibold">
+              {{ moment.moment_date }}
+            </div>
           </template>
           <div class="description poppins-semibold text-grey text-body1">
             {{ moment.description }}
@@ -111,6 +125,9 @@ const handleScroll = async () => {
 </template>
 
 <style type="css" lang="css">
+.q-timeline__entry--icon .q-timeline__dot:after {
+  top: 87px !important;
+}
 .custom-avatar {
   min-height: 100px;
   opacity: 0;

@@ -46,6 +46,7 @@ export default {
         position: 'Ordem',
         positionHint:
           'Adicione ordem de posição em que o momento será visualiado na linha do tempo. Ex: 1,2,3,4...',
+        momentDate: 'Data do momento',
       },
       tableMoments: {
         title: 'Título',
@@ -62,6 +63,7 @@ export default {
         position: 'Posição',
         deleteConfirmation:
           'Essa ação irá remover todos as fotos/videos desse momento. Está certo disso?',
+        momentDate: 'Data do momento',
       },
       formLogin: {
         email: 'E-mail',
@@ -102,6 +104,13 @@ export default {
         type: 'Tipo',
         name: 'Nome',
         status: 'Status',
+      },
+      formRegister: {
+        name: 'Nome',
+        email: 'E-mail',
+        password: 'Senha',
+        passwordConfirmation: 'Confirmar senha',
+        register: 'Criar conta',
       },
     },
     pages: {
@@ -211,6 +220,9 @@ export default {
           deleteConfirmation:
             'Ao validar essa ação todos as suas fotos/videos serão excluídos permanentemente.',
         },
+      },
+      register: {
+        hasAnAccount: 'Já tenho uma conta',
       },
     },
   },

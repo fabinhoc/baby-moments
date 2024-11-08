@@ -49,6 +49,7 @@ export default {
         postion: 'Position',
         positionHint:
           'Add order of position in which the moment will be displayed on the timeline. Eg: 1,2,3,4...',
+        momentDate: 'Date moment',
       },
       tableMoments: {
         title: 'Title',
@@ -65,6 +66,7 @@ export default {
         position: 'Position',
         deleteConfirmation:
           'This action will remove all photos/videos from that moment. Are you sure about that?',
+        momentDate: 'Date moment',
       },
       formLogin: {
         email: 'Email',
@@ -105,6 +107,13 @@ export default {
         type: 'Type',
         name: 'Name',
         status: 'Status',
+      },
+      formRegister: {
+        name: 'Name',
+        email: 'Email',
+        password: 'Password',
+        passwordConfirmation: 'Confirm password',
+        register: 'Create account',
       },
     },
     pages: {
@@ -210,6 +219,9 @@ export default {
           btnDelete: 'I AM AWARE, Delete my account',
           deleteConfirmation:
             'By validating this action all your photos/videos will be permanently deleted.',
+        },
+        register: {
+          hasAnAccount: 'I already have an account',
         },
       },
     },
