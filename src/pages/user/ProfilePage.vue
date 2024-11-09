@@ -31,7 +31,7 @@ const remove = async () => {
       await service.remove(user.uuid);
       notify.success(t('success'));
       logout()
-      router.push({ name: 'login'})
+      router.push({ name: 'remove-account'})
     });
   } catch (error: any) {
     console.log(error);

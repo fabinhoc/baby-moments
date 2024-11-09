@@ -224,6 +224,14 @@ export default {
       register: {
         hasAnAccount: 'Já tenho uma conta',
       },
+      removeAccount: {
+        sentence1: 'Que pena que desistiu de nós :(',
+        sentence2:
+          'Mas, não se preocupe estaremos sempre aqui para te atender.',
+        sentence3:
+          'De acordo com as normas LGPD todos os seus dados pessoais foram removidos com sucesso.',
+        btnBack: 'Voltar para pagina inicial',
+      },
     },
   },
 };

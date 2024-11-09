@@ -29,6 +29,14 @@ const routes: RouteRecordRaw[] = [
           requiresAuth: false,
         },
       },
+      {
+        path: '/user/remove-account',
+        name: 'remove-account',
+        component: () => import('pages/exit/DeleteAccountPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
     ],
   },
   {

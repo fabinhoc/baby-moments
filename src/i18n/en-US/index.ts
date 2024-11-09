@@ -223,6 +223,13 @@ export default {
         register: {
           hasAnAccount: 'I already have an account',
         },
+        removeAccount: {
+          sentence1: 'What a shame you gave up on us :(',
+          sentence2: "But don't worry, we will always be here to help you.",
+          sentence3:
+            'In accordance with LGPD regulations, all your personal data has been successfully removed.',
+          btnBack: 'Back to home page',
+        },
       },
     },
   },

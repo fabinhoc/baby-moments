@@ -64,7 +64,6 @@ const handleSubmit = async () => {
     formData.append('theme', form.value.theme as string);
     if (form.value.moment_date) {
       const parsedDate = parseAndFormatDate(form.value.moment_date);
-      console.log(parsedDate);
       formData.append('moment_date', parsedDate as string);
     }
 
