@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { computed, Ref, ComputedRef, ref } from 'vue';
+import { useAuthStore } from 'src/stores/auth.store';
+import StorageMemory from 'src/utils/ConvertStorageMemory';
+import { computed, ComputedRef } from 'vue';
 
 defineOptions({
   name: 'BtnConfig',
 });
 
-const spacingPlan: Ref<number> = ref(5);
+const spacingPlan: ComputedRef<number> = computed(() => {
+  const { user } = useAuthStore();
+  return user.memory_used ? user.memory_used : 0;
+});
+const { convertBytesToSize } = StorageMemory();
 
-const spacingPlanLabel: ComputedRef<string> = computed(
-  () => `${spacingPlan.value} GB`
+const spacingPlanLabel: ComputedRef<string> = computed(() =>
+  convertBytesToSize(spacingPlan.value)
 );
 </script>
 
@@ -38,7 +44,7 @@ const spacingPlanLabel: ComputedRef<string> = computed(
               <template #default>
                 <q-slider
                   :min="0"
-                  :max="10"
+                  :max="161061273600"
                   v-model="spacingPlan"
                   readonly
                   color="positive"
@@ -49,7 +55,9 @@ const spacingPlanLabel: ComputedRef<string> = computed(
                 </q-slider>
               </template>
             </q-item-section>
-            <q-item-section side> 10 GB </q-item-section>
+            <q-item-section side>
+              {{ convertBytesToSize(161061273600) }}
+            </q-item-section>
           </q-item>
           <q-item clickable v-close-popup>
             <q-item-section class="text-primary">
