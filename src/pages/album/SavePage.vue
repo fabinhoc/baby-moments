@@ -6,6 +6,8 @@ import useDialog from 'src/composables/useDialog';
 import useNotify from 'src/composables/useNotify';
 import useAlbumFileService from 'src/services/abumFile.service';
 import useAlbumService from 'src/services/album.service';
+import useAuthService from 'src/services/auth.service';
+import { useAuthStore } from 'src/stores/auth.store';
 import { AlbumFileType } from 'src/types/AbumFile.type';
 import { AlbumType } from 'src/types/Album.type';
 import { onMounted, provide, ref, Ref } from 'vue';
@@ -28,6 +30,8 @@ const album: Ref<AlbumType | null> = ref(null);
 const albumFiles: Ref<AlbumFileType[]> = ref([]);
 const theme: Ref<string> = ref('#eee');
 const dialogConfirmation = useDialog();
+const userService = useAuthService();
+const { setUser, user } = useAuthStore();
 
 const getAlbum = async () => {
   try {
@@ -53,6 +57,8 @@ const removeAlbumFile = async (id: number) => {
   dialogConfirmation.confirm().onOk(async () => {
     if (id) {
       await albumFileService.remove(id);
+      const response = await userService.getUser(user.uuid);
+      setUser(response);
       getAlbum();
     }
   });
