@@ -3,6 +3,8 @@ import useAlbumFileService from 'src/services/abumFile.service';
 import { computed, Ref, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import 'emoji-picker-element';
+import useAuthService from 'src/services/auth.service';
+import { useAuthStore } from 'src/stores/auth.store';
 
 enum UploadFileEnum {
   PENDING = 'PENDING',
@@ -32,6 +34,8 @@ const files: Ref<UploadFileType[]> = ref([]);
 const CHUNK_SIZE = 8 * 1024 * 1024;
 const route = useRoute();
 const activeField: Ref<number | null> = ref(null);
+const userService = useAuthService();
+const { setUser, user } = useAuthStore();
 const totalSize = computed(() => {
   return files.value.reduce((total, fileObj) => {
     return total + fileObj.file.size;
@@ -110,11 +114,12 @@ const uploadFile = (fileData: UploadFileType) => {
     return;
   };
 
-  const onSuccess = (message: string | null) => {
+  const onSuccess = async () => {
     if (fileData.status === UploadFileEnum.ERROR) return;
     fileData.status = UploadFileEnum.SUCCESS;
     emit('uploaded');
-    console.log(message);
+    const responseUser = await userService.getUser(user.uuid);
+    setUser(responseUser);
   };
 
   const startUpload = async () => {
@@ -131,7 +136,7 @@ const uploadFile = (fileData: UploadFileType) => {
       );
       currentChunk++;
     }
-    onSuccess(null);
+    onSuccess();
   };
 
   startUpload();

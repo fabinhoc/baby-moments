@@ -34,7 +34,6 @@ const handleSubmit = async () => {
     if (!validate) return false;
     await service.updateUser(user.uuid, form.value);
     const userUpdated: UserType = await service.getUser(user.uuid);
-    console.log(userUpdated);
     setUser(userUpdated);
     notify.success(t('success'));
   } catch (error: any) {

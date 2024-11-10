@@ -67,6 +67,7 @@ export default {
         deleteConfirmation:
           'This action will remove all photos/videos from that moment. Are you sure about that?',
         momentDate: 'Date moment',
+        memoryUsed: 'Memory Usage',
       },
       formLogin: {
         email: 'Email',
@@ -153,6 +154,7 @@ export default {
         save: {
           goBack: 'Go back',
           title: 'Photos/videos album',
+          totalMemoryUsed: 'Total Memory Usage',
         },
       },
       login: {

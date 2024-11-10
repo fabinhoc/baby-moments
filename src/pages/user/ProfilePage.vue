@@ -6,7 +6,8 @@ import useDialog from 'src/composables/useDialog';
 import useNotify from 'src/composables/useNotify';
 import useAuthService from 'src/services/auth.service';
 import { useAuthStore } from 'src/stores/auth.store';
-import { computed, ComputedRef, ref, Ref } from 'vue';
+import StorageMemory from 'src/utils/StorageMemory';
+import { computed, ComputedRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
@@ -14,9 +15,13 @@ defineOptions({
   name: 'ProfilePage',
 });
 
-const spacingPlan: Ref<number> = ref(50);
+const { convertBytesToSize } = StorageMemory();
+const spacingPlan: ComputedRef<number> = computed(() => {
+  const { user } = useAuthStore();
+  return user.memory_used ? user.memory_used : 0;
+});
 const spacingPlanLabel: ComputedRef<string> = computed(
-  () => `${spacingPlan.value} GB`
+  () => convertBytesToSize(spacingPlan.value)
 );
 const dialogConfirmation = useDialog();
 const notify = useNotify()
@@ -140,7 +145,7 @@ const remove = async () => {
                     <template #default>
                       <q-slider
                         :min="0"
-                        :max="100"
+                        :max="161061273600"
                         v-model="spacingPlan"
                         readonly
                         color="positive"
@@ -151,7 +156,7 @@ const remove = async () => {
                       </q-slider>
                     </template>
                   </q-item-section>
-                  <q-item-section side> 100 GB </q-item-section>
+                  <q-item-section side> {{ convertBytesToSize(161061273600) }} </q-item-section>
                 </q-item>
               </q-list>
             </div>

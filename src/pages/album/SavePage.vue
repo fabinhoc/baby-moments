@@ -6,10 +6,13 @@ import useDialog from 'src/composables/useDialog';
 import useNotify from 'src/composables/useNotify';
 import useAlbumFileService from 'src/services/abumFile.service';
 import useAlbumService from 'src/services/album.service';
+import useAuthService from 'src/services/auth.service';
+import { useAuthStore } from 'src/stores/auth.store';
 import { AlbumFileType } from 'src/types/AbumFile.type';
 import { AlbumType } from 'src/types/Album.type';
 import { onMounted, provide, ref, Ref } from 'vue';
 import { useRoute } from 'vue-router';
+import StorageMemory from 'src/utils/StorageMemory';
 
 defineOptions({
   name: 'SaveAlbumPage',
@@ -28,6 +31,9 @@ const album: Ref<AlbumType | null> = ref(null);
 const albumFiles: Ref<AlbumFileType[]> = ref([]);
 const theme: Ref<string> = ref('#eee');
 const dialogConfirmation = useDialog();
+const userService = useAuthService();
+const { setUser, user } = useAuthStore();
+const { convertBytesToSize } = StorageMemory();
 
 const getAlbum = async () => {
   try {
@@ -53,6 +59,8 @@ const removeAlbumFile = async (id: number) => {
   dialogConfirmation.confirm().onOk(async () => {
     if (id) {
       await albumFileService.remove(id);
+      const response = await userService.getUser(user.uuid);
+      setUser(response);
       getAlbum();
     }
   });
@@ -97,6 +105,10 @@ provide('updateAlbumFile', updateAlbumFile);
       </q-card-section>
       <q-card-section>
         <FileDataUpload @uploaded="getAlbum" />
+      </q-card-section>
+      <q-card-section class="text-negative">
+        <span>{{ $t('app.pages.album.save.totalMemoryUsed') }}</span>
+        {{ convertBytesToSize(album?.memory_usage as number) }}
       </q-card-section>
       <q-card-section>
         <div class="column q-gutter-y-md">
