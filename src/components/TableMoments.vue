@@ -4,6 +4,10 @@ import useMomentService from 'src/services/moment.service';
 import { MomentType } from 'src/types/Moment.type';
 import { inject } from 'vue';
 import { useI18n } from 'vue-i18n';
+import StorageMemory from 'src/utils/StorageMemory';
+import useAuthService from 'src/services/auth.service';
+import { useAuthStore } from 'src/stores/auth.store';
+import useNotify from 'src/composables/useNotify';
 
 defineOptions({
   name: 'TableMoments',
@@ -20,6 +24,10 @@ const { t, d } = useI18n();
 const dialogConfirmation = useDialog();
 const service = useMomentService();
 const getTimeline: any = inject('getTimeline');
+const { convertBytesToSize } = StorageMemory();
+const userSevice = useAuthService();
+const { setUser, user } = useAuthStore();
+const notify = useNotify();
 
 const columns: any = [
   {
@@ -28,6 +36,14 @@ const columns: any = [
     label: '#',
     align: 'left',
     field: (row: MomentType) => row.avatar,
+    sortable: false,
+  },
+  {
+    name: 'memory_used',
+    required: true,
+    label: t('app.components.tableMoments.memoryUsed'),
+    align: 'left',
+    field: (row: MomentType) => convertBytesToSize(row.memory_used as number),
     sortable: false,
   },
   {
@@ -69,14 +85,6 @@ const columns: any = [
     sortable: false,
   },
   {
-    name: 'description',
-    required: true,
-    label: t('app.components.tableMoments.description'),
-    align: 'left',
-    field: (row: MomentType) => row.description,
-    sortable: false,
-  },
-  {
     name: 'actions',
     required: true,
     label: t('app.components.tableMoments.actions'),
@@ -95,6 +103,9 @@ const remove = async (id: number) => {
       .onOk(async () => {
         await service.remove(id);
         getTimeline();
+        const response = await userSevice.getUser(user.uuid);
+        setUser(response);
+        notify.success(t('success'));
       });
   } catch (error: any) {
     console.log(error);
@@ -190,12 +201,12 @@ const remove = async (id: number) => {
                     <img
                       :src="col.value"
                       :alt="col.value"
-                      :style="{ border: '4px solid' + props.row.color }"
+                      :style="{ border: '4px solid' + props.row.theme }"
                     />
                   </q-avatar>
                 </q-item-label>
               </q-item-section>
-              <q-item-section v-else-if="col.name === 'color'" side>
+              <q-item-section v-else-if="col.name === 'theme'" side>
                 <q-item-label>
                   <q-card
                     flat

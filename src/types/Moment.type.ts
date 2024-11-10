@@ -13,4 +13,5 @@ export interface MomentType {
   updated_at?: Date | null;
   isVisible?: boolean | null;
   moment_date: string | null;
+  memory_used: number | null;
 }

@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import PageTitle from 'src/components/PageTitle.vue';
 import useDialog from 'src/composables/useDialog';
+import useNotify from 'src/composables/useNotify';
+import useAuthService from 'src/services/auth.service';
 import useTimelineService from 'src/services/timeline.service';
+import { useAuthStore } from 'src/stores/auth.store';
 import { TimelineType } from 'src/types/Timeline.type';
 import { onMounted, ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -14,6 +17,9 @@ const service = useTimelineService();
 const timelines: Ref<TimelineType[] | null> = ref(null);
 const dialogConfirmation = useDialog();
 const { t } = useI18n();
+const userService = useAuthService();
+const { user, setUser } = useAuthStore();
+const notify = useNotify();
 
 onMounted(() => {
   getTimelines();
@@ -37,8 +43,11 @@ const remove = async (uuid: string) => {
       )
       .onOk(async () => {
         const { data } = await service.remove(uuid);
+        const response = await userService.getUser(user.uuid);
+        setUser(response);
         timelines.value = data;
         getTimelines();
+        notify.success(t('success'));
       });
   } catch (error: any) {
     console.log(error);

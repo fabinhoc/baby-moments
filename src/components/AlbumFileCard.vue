@@ -3,6 +3,7 @@ import { AlbumFileType } from 'src/types/AbumFile.type';
 import { AlbumFileFileTypeEnum } from 'src/types/enums/AlbumFileFileType.enum';
 import { inject, ref, Ref } from 'vue';
 import 'emoji-picker-element';
+import StorageMemory from 'src/utils/StorageMemory';
 
 defineOptions({
   name: 'AlbumFileCard',
@@ -15,6 +16,7 @@ defineProps<{
 
 const title: Ref<string> = ref('');
 const isEditing: Ref<boolean> = ref(false);
+const { convertBytesToSize } = StorageMemory();
 
 const removeItem: any = inject('removeAlbumFile');
 const updateItem: any = inject('updateAlbumFile');
@@ -111,7 +113,7 @@ const addEmoji = (event: any) => {
           text-color="black"
           icon="las la-cloud-upload-alt"
         >
-          {{ albumFile.memory_usage }}
+          {{ convertBytesToSize(albumFile.memory_usage) }}
         </q-chip>
       </div>
       <q-btn

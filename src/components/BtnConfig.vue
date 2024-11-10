@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAuthStore } from 'src/stores/auth.store';
-import StorageMemory from 'src/utils/ConvertStorageMemory';
+import StorageMemory from 'src/utils/StorageMemory';
 import { computed, ComputedRef } from 'vue';
 
 defineOptions({

@@ -12,6 +12,7 @@ import { AlbumFileType } from 'src/types/AbumFile.type';
 import { AlbumType } from 'src/types/Album.type';
 import { onMounted, provide, ref, Ref } from 'vue';
 import { useRoute } from 'vue-router';
+import StorageMemory from 'src/utils/StorageMemory';
 
 defineOptions({
   name: 'SaveAlbumPage',
@@ -32,6 +33,7 @@ const theme: Ref<string> = ref('#eee');
 const dialogConfirmation = useDialog();
 const userService = useAuthService();
 const { setUser, user } = useAuthStore();
+const { convertBytesToSize } = StorageMemory();
 
 const getAlbum = async () => {
   try {
@@ -103,6 +105,10 @@ provide('updateAlbumFile', updateAlbumFile);
       </q-card-section>
       <q-card-section>
         <FileDataUpload @uploaded="getAlbum" />
+      </q-card-section>
+      <q-card-section class="text-negative">
+        <span>{{ $t('app.pages.album.save.totalMemoryUsed') }}</span>
+        {{ convertBytesToSize(album?.memory_usage as number) }}
       </q-card-section>
       <q-card-section>
         <div class="column q-gutter-y-md">
