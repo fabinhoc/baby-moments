@@ -37,6 +37,14 @@ const routes: RouteRecordRaw[] = [
           requiresAuth: false,
         },
       },
+      {
+        path: '/checkout',
+        name: 'checkout',
+        component: () => import('pages/payment/IndexPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
     ],
   },
   {
