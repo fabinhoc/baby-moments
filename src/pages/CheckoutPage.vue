@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import PlanCard from 'src/components/PlanCard.vue';
 import useNotify from 'src/composables/useNotify';
 import usePlanService from 'src/services/plan.service';
@@ -24,11 +24,10 @@ getPlans();
 </script>
 
 <template>
-  <q-page padding ref="page">
-    <div class="column items-center justify-start q-gutter-y-md">
-      A pagina index será a landing page para vender o produto
-      <q-btn :to="{ name: 'timeline-list' }">Ir para timelines</q-btn>
-    </div>
+  <q-page padding>
+    <p class="text-h4 text-center text-negative">
+      Selecione um plano para continuar
+    </p>
     <div class="row items-center justify-center q-col-gutter-x-md q-pt-md">
       <div v-for="plan in plans" :key="plan.id">
         <PlanCard :plan="plan" />

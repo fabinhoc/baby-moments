@@ -47,5 +47,16 @@ export const useAuthStore = defineStore('login', {
     isEmailVerified: (state) => {
       return !!state.user.email_verified_at;
     },
+    isSubscribed: (state) => {
+      if (!state.user.subscription) {
+        return false;
+      }
+
+      if (state.user.subscription.stripe_status === 'active') {
+        return true;
+      }
+
+      return false;
+    },
   },
 });

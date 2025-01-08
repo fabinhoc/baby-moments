@@ -45,7 +45,7 @@ export default route(function (/* { store, ssrContext } */) {
 
   Router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.requiresAuth)) {
-      const { isLoggedIn, isEmailVerified } = useAuthStore();
+      const { isLoggedIn, isEmailVerified, isSubscribed } = useAuthStore();
       if (!isLoggedIn) {
         next({ name: 'login' });
         return;
@@ -57,6 +57,21 @@ export default route(function (/* { store, ssrContext } */) {
         !isEmailVerified
       ) {
         next({ name: 'email-verification' });
+        return;
+      }
+
+      const whiteListPages: Array<string> = [
+        'email-verification',
+        'checkout',
+        'received-payment',
+      ];
+
+      if (
+        !whiteListPages.includes(from.name as string) &&
+        !whiteListPages.includes(to.name as string) &&
+        !isSubscribed
+      ) {
+        next({ name: 'checkout' });
         return;
       }
 

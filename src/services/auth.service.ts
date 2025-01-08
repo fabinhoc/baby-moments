@@ -122,6 +122,15 @@ export default function useAuthService() {
     }
   };
 
+  const checkout = (payload: any) => {
+    try {
+      const { post } = useApi('subscription-checkout');
+      return post(payload);
+    } catch (error: unknown) {
+      throw error;
+    }
+  };
+
   return {
     login,
     logout,
@@ -134,5 +143,6 @@ export default function useAuthService() {
     updatePassword,
     remove,
     register,
+    checkout,
   };
 }

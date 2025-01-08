@@ -66,6 +66,41 @@ export default boot(({ app }) => {
         },
       } as const,
     },
+    numberFormats: {
+      'pt-BR': {
+        currency: {
+          style: 'currency',
+          currency: 'BRL',
+          useGrouping: true,
+          currencyDisplay: 'symbol',
+        },
+        decimal: {
+          style: 'decimal',
+          minimumSignificantDigits: 3,
+          maximumSignificantDigits: 5,
+        },
+        percent: {
+          style: 'percent',
+          useGrouping: false,
+        },
+      },
+      'en-US': {
+        currency: {
+          style: 'currency',
+          currency: 'USD',
+          notation: 'standard',
+        },
+        decimal: {
+          style: 'decimal',
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        },
+        percent: {
+          style: 'percent',
+          useGrouping: false,
+        },
+      },
+    } as const,
   });
 
   // Set i18n instance on app
